@@ -2,3 +2,24 @@ main {
     margin-top: 50px;
     margin-bottom: 50px;
 }
+
+.navbar-nav {
+    font-weight: 500;
+}
+
+.footer {
+    padding: 20px;
+}
+
+.navbar {
+    font-size: 17px;
+}
+
+.logo {
+    width: 140px;
+    margin-right: 20px;
+}
+
+.nav-item a {
+    color: black !important;
+}

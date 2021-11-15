@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Booking.Models
+﻿namespace Booking.Models
 {
     public class Apartment
     {
@@ -10,7 +8,7 @@ namespace Booking.Models
         public int LocationId { get; set; }
         public string Address { get; set; }
         public double AvgScore { get; set; }
-        public TimeSpan MaxDuration { get; set; }
+        public int MaxDurationInDays { get; set; }
         public ApartmentState State { get; set; }
     }
 
