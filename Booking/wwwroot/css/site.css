@@ -1,8 +1,23 @@
+
 body {
-    margin-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
-main {
+    body > main {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    body > footer {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 0;
+    }
+
+.content {
     margin-top: 50px;
     margin-bottom: 50px;
 }
