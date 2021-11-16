@@ -17,14 +17,11 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
+                    <li class="nav-item @Html.IsSelected(actions: "Index", controllers: "Apartment")">
                         <a class="nav-link" asp-controller="Apartment" asp-action="Index">Apartments</a>
                     </li>
-                    <li class="nav-item" is-active-route asp-controller="Hoster">
+                    <li class="nav-item @Html.IsSelected(actions: "Index", controllers: "Hoster")">
                         <a class="nav-link" asp-controller="Hoster" asp-action="Index">Hosters</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Explorer" asp-action="Index">Explorers</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
@@ -44,7 +41,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-center fixed-bottom">
+    <footer class="footer text-center fixed-bottom">
         <div class="container">
             &copy; Booking
         </div>

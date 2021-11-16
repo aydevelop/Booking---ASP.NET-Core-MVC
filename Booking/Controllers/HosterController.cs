@@ -22,8 +22,13 @@ namespace Booking.Controllers
 
         public ActionResult Details(int id)
         {
-            Hoster h = hosters.First(s => s.Id == id);
-            return View(h);
+            Hoster hoster = hosters.FirstOrDefault(s => s.Id == id);
+            if (hoster == null)
+            {
+                return NotFound();
+            }
+
+            return View();
         }
 
         public ActionResult CreateOrEdit(int id)
@@ -31,7 +36,6 @@ namespace Booking.Controllers
             var hoster = hosters.FirstOrDefault(s => s.Id == id);
             return View(hoster != null ? hoster : new Hoster());
         }
-
 
         [HttpPost]
         public ActionResult Create(Hoster hoster)
