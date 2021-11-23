@@ -46,9 +46,9 @@ namespace Booking.Controllers
         {
             if (!ModelState.IsValid) { return View(apartment); }
             var item = _db.Apartments.FirstOrDefault(s => s.Id == apartment.Id);
-            if (apartment == null) { return NotFound(); }
+            if (item == null) { return NotFound(); }
 
-            _db.Apartments.Update(apartment);
+            _db.Entry(item).CurrentValues.SetValues(apartment);
             _db.SaveChanges();
 
             return RedirectToAction(nameof(Index));

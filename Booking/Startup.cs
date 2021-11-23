@@ -51,6 +51,18 @@ namespace Booking
 
             app.UseAuthorization();
 
+            //app.Use(async (Context, next) =>
+            //{
+            //    try
+            //    {
+            //        await next();
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        Context.Response.Redirect("/Error");
+            //    }
+            //});
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

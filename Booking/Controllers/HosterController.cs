@@ -9,9 +9,13 @@ namespace Booking.Controllers
     {
         private readonly AppDbContext _db;
 
-        public HosterController(AppDbContext db) => _db = db;
+        public HosterController(AppDbContext db)
+        {
+            _db = db;
+            //_db.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+        }
 
-        public IActionResult Index()
+        public ActionResult Index()
         {
             var hosters = _db.Hosters.ToList();
             return View(hosters);
@@ -19,14 +23,14 @@ namespace Booking.Controllers
 
         public ActionResult Details(int id)
         {
-            var hoster = _db.Hosters.FirstOrDefault(q => q.Id == id);
+            var hoster = _db.Hosters.Find(id);
             if (hoster == null) { return NotFound(); }
             return View(hoster);
         }
 
         public ActionResult CreateOrEdit(int id)
         {
-            var hoster = _db.Hosters.FirstOrDefault(s => s.Id == id);
+            var hoster = _db.Hosters.Find(id);
             return View(hoster != null ? hoster : new Hoster());
         }
 
@@ -45,10 +49,10 @@ namespace Booking.Controllers
         public ActionResult Edit(Hoster hoster)
         {
             if (!ModelState.IsValid) { return View(hoster); }
-            var item = _db.Apartments.FirstOrDefault(s => s.Id == hoster.Id);
-            if (hoster == null) { return NotFound(); }
+            var item = _db.Hosters.Find(hoster.Id);
+            if (item == null) { return NotFound(); }
 
-            _db.Hosters.Update(hoster);
+            _db.Entry(item).CurrentValues.SetValues(hoster);
             _db.SaveChanges();
 
             return RedirectToAction(nameof(Index));
@@ -57,7 +61,7 @@ namespace Booking.Controllers
 
         public ActionResult Delete(int id)
         {
-            var item = _db.Hosters.FirstOrDefault(s => s.Id == id);
+            var item = _db.Hosters.Find(id);
             if (item == null) { return NotFound(); }
 
             return View(item);
@@ -66,7 +70,7 @@ namespace Booking.Controllers
         [HttpPost]
         public IActionResult DeleteHoster(int id)
         {
-            var hoster = _db.Hosters.FirstOrDefault(s => s.Id == id);
+            var hoster = _db.Hosters.Find(id);
             if (hoster == null) { return NotFound(); }
 
             _db.Hosters.Remove(hoster);
