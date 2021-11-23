@@ -1,4 +1,4 @@
-﻿using Booking.Models;
+﻿using Booking.DAL.Models;
 using System.Collections.Generic;
 
 namespace Booking.Controllers

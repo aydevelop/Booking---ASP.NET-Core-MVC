@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Booking.Models
+namespace Booking.DAL.Models
 {
     public class Explorer
     {

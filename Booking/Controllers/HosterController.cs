@@ -1,67 +1,55 @@
-﻿using Booking.Models;
+﻿using Booking.DAL;
+using Booking.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Booking.Controllers
 {
     public class HosterController : Controller
     {
-        static List<Hoster> hosters = new List<Hoster>()
-        {
-            new Hoster(){ Id=1, FirstName="Robin", LastName="Williams"},
-            new Hoster(){ Id=2, FirstName="Ben", LastName="Stiller" },
-            new Hoster(){ Id=3, FirstName="Sandra", LastName="Bullock"},
-            new Hoster(){ Id=4, FirstName="Jonah", LastName="Hill"}
-        };
+        private readonly AppDbContext _db;
+
+        public HosterController(AppDbContext db) => _db = db;
 
         public IActionResult Index()
         {
+            var hosters = _db.Hosters.ToList();
             return View(hosters);
         }
 
         public ActionResult Details(int id)
         {
-            Hoster hoster = hosters.FirstOrDefault(s => s.Id == id);
-            if (hoster == null)
-            {
-                return NotFound();
-            }
-
-            return View();
+            var hoster = _db.Hosters.FirstOrDefault(q => q.Id == id);
+            if (hoster == null) { return NotFound(); }
+            return View(hoster);
         }
 
         public ActionResult CreateOrEdit(int id)
         {
-            var hoster = hosters.FirstOrDefault(s => s.Id == id);
+            var hoster = _db.Hosters.FirstOrDefault(s => s.Id == id);
             return View(hoster != null ? hoster : new Hoster());
         }
 
         [HttpPost]
         public ActionResult Create(Hoster hoster)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(hoster);
-            }
+            if (!ModelState.IsValid) { return View(hoster); }
 
-            hoster.Id = hosters.Max(s => s.Id) + 1;
-            hosters.Add(hoster);
+            _db.Hosters.Add(hoster);
+            _db.SaveChanges();
+
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         public ActionResult Edit(Hoster hoster)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(hoster);
-            }
+            if (!ModelState.IsValid) { return View(hoster); }
+            var item = _db.Apartments.FirstOrDefault(s => s.Id == hoster.Id);
+            if (hoster == null) { return NotFound(); }
 
-            var item = hosters.First(s => s.Id == hoster.Id);
-            item.FirstName = hoster.FirstName;
-            item.LastName = hoster.LastName;
-            item.State = hoster.State;
+            _db.Hosters.Update(hoster);
+            _db.SaveChanges();
 
             return RedirectToAction(nameof(Index));
         }
@@ -69,25 +57,21 @@ namespace Booking.Controllers
 
         public ActionResult Delete(int id)
         {
-            var hoster = hosters.FirstOrDefault(s => s.Id == id);
-            if (hoster == null)
-            {
-                return NotFound();
-            }
+            var item = _db.Hosters.FirstOrDefault(s => s.Id == id);
+            if (item == null) { return NotFound(); }
 
-            return View(hoster);
+            return View(item);
         }
 
         [HttpPost]
         public IActionResult DeleteHoster(int id)
         {
-            var hoster = hosters.FirstOrDefault(s => s.Id == id);
-            if (hoster == null)
-            {
-                return NotFound();
-            }
+            var hoster = _db.Hosters.FirstOrDefault(s => s.Id == id);
+            if (hoster == null) { return NotFound(); }
 
-            hosters.Remove(hoster);
+            _db.Hosters.Remove(hoster);
+            _db.SaveChanges();
+
             return RedirectToAction(nameof(Index));
         }
     }
