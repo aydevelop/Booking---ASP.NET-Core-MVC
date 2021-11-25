@@ -1,9 +1,12 @@
-﻿namespace Booking.DAL.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Booking.DAL.Models
 {
-    public class Location
+    public class Location : BaseModel
     {
-        public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public LocationState State { get; set; }
     }
 

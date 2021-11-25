@@ -1,8 +1,7 @@
 ﻿namespace Booking.DAL.Models
 {
-    public class Grade
+    public class Grade : BaseModel
     {
-        public int Id { get; set; }
         public int AppartementId { get; set; }
         public int VisitorId { get; set; }
         public double Score { get; set; }

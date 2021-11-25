@@ -5,73 +5,45 @@ using System.Linq;
 
 namespace Booking.Controllers
 {
-    public class ApartmentController : Controller
+    public class ApartmentController : BaseController<Apartment>
     {
         private readonly AppDbContext _db;
 
-        public ApartmentController(AppDbContext db) => _db = db;
-
-        public ActionResult Index()
+        public ApartmentController(AppDbContext db) : base(db)
         {
-            var apartments = _db.Apartments.ToList();
-            return View(apartments);
+            _db = db;
         }
 
-        public ActionResult Details(int id)
+        public override ActionResult CreateOrEdit(int id)
         {
-            var apartment = _db.Apartments.FirstOrDefault(q => q.Id == id);
-            if (apartment == null) { return NotFound(); }
-            return View(apartment);
-        }
+            ViewBag.Hosters = _db.Hosters.Where(q => q.State == HosterState.Active).ToList();
+            ViewBag.Locations = _db.Locations.Where(q => q.State == LocationState.Active).ToList();
 
-        public ActionResult CreateOrEdit(int id)
-        {
-            var apartment = _db.Apartments.FirstOrDefault(s => s.Id == id);
-            return View(apartment != null ? apartment : new Apartment());
+            return base.CreateOrEdit(id);
         }
 
         [HttpPost]
-        public ActionResult Create(Apartment apartment)
+        public override ActionResult Create(Apartment input)
         {
-            if (!ModelState.IsValid) { return View(apartment); }
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Hosters = _db.Hosters.Where(q => q.State == HosterState.Active).ToList();
+                ViewBag.Locations = _db.Locations.Where(q => q.State == LocationState.Active).ToList();
+            }
 
-            _db.Apartments.Add(apartment);
-            _db.SaveChanges();
-
-            return RedirectToAction(nameof(Index));
+            return base.Create(input);
         }
 
         [HttpPost]
-        public ActionResult Edit(Apartment apartment)
+        public override ActionResult Edit(Apartment input)
         {
-            if (!ModelState.IsValid) { return View(apartment); }
-            var item = _db.Apartments.FirstOrDefault(s => s.Id == apartment.Id);
-            if (item == null) { return NotFound(); }
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Hosters = _db.Hosters.Where(q => q.State == HosterState.Active).ToList();
+                ViewBag.Locations = _db.Locations.Where(q => q.State == LocationState.Active).ToList();
+            }
 
-            _db.Entry(item).CurrentValues.SetValues(apartment);
-            _db.SaveChanges();
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        public ActionResult Delete(int id)
-        {
-            var item = _db.Apartments.FirstOrDefault(s => s.Id == id);
-            if (item == null) { return NotFound(); }
-
-            return View(item);
-        }
-
-        [HttpPost]
-        public IActionResult DeleteApartment(int id)
-        {
-            var apartment = _db.Apartments.FirstOrDefault(s => s.Id == id);
-            if (apartment == null) { return NotFound(); }
-
-            _db.Apartments.Remove(apartment);
-            _db.SaveChanges();
-
-            return RedirectToAction(nameof(Index));
+            return base.Edit(input);
         }
     }
 }
