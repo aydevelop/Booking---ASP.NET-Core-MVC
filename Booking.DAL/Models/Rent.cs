@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Booking.DAL.Enums;
+using System;
 
 namespace Booking.DAL.Models
 {
@@ -9,10 +10,5 @@ namespace Booking.DAL.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public RentState State { get; set; }
-    }
-
-    public enum RentState
-    {
-        Requested, Approved, Rejected, Inactive
     }
 }

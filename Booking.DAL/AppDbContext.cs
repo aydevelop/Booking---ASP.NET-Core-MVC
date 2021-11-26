@@ -1,4 +1,5 @@
-﻿using Booking.DAL.Models;
+﻿using Booking.DAL.Configurations;
+using Booking.DAL.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,9 @@ namespace Booking.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new ApartmentConfiguration());
+            modelBuilder.ApplyConfiguration(new HosterConfiguration());
+            modelBuilder.ApplyConfiguration(new LocationConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace Booking.DAL.Models
+﻿using Booking.DAL.Enums;
+
+namespace Booking.DAL.Models
 {
     public class Feature : BaseModel
     {
@@ -7,8 +9,5 @@
         public FeatureState State { get; set; }
     }
 
-    public enum FeatureState
-    {
-        Draft, Active, Inactive
-    }
+
 }

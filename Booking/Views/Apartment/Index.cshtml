@@ -19,10 +19,10 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.HosterId)
+                @Html.DisplayNameFor(model => model.Hoster)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LocationId)
+                @Html.DisplayNameFor(model => model.Location)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Address)
@@ -50,10 +50,10 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.HosterId)
+                    @Html.DisplayFor(modelItem => item.Hoster.FullName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LocationId)
+                    @Html.DisplayFor(modelItem => item.Location.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Address)

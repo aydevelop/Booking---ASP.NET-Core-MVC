@@ -1,15 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Booking.DAL.Enums;
+using FluentValidation;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Booking.DAL.Models
 {
     public class Hoster : BaseModel
     {
-        [Required]
         public string FirstName { get; set; }
-        [Required]
         public string LastName { get; set; }
-        [Required]
         public HosterState State { get; set; }
 
         [NotMapped]
@@ -22,8 +20,12 @@ namespace Booking.DAL.Models
         }
     }
 
-    public enum HosterState
+    public class HosterValidator : AbstractValidator<Hoster>
     {
-        Draft, Active, Inactive
+        public HosterValidator()
+        {
+            RuleFor(p => p.FirstName).NotEmpty().MaximumLength(100);
+            RuleFor(p => p.LastName).NotEmpty().MaximumLength(100);
+        }
     }
 }

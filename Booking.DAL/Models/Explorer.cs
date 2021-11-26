@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Booking.DAL.Enums;
+using System;
 
 namespace Booking.DAL.Models
 {
@@ -12,8 +13,5 @@ namespace Booking.DAL.Models
         public ExplorerState StateFromDate { get; set; }
     }
 
-    public enum ExplorerState
-    {
-        Requested, Approved, Rejected, Inactive
-    }
+
 }
