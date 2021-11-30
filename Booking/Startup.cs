@@ -32,16 +32,20 @@ namespace Booking
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseStatusCodePages();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseStatusCodePagesWithReExecute("/error/{0}");
+                app.UseExceptionHandler("/error");
                 app.UseHsts();
             }
 
+            app.UseStatusCodePagesWithReExecute("/Home/HandleError/{0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();

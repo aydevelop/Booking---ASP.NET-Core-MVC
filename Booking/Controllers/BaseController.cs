@@ -33,7 +33,15 @@ namespace Booking.Controllers
         [HttpPost]
         public virtual ActionResult Create(T input)
         {
-            if (!ModelState.IsValid) { return View("CreateOrEdit", input); }
+            if (!ModelState.IsValid)
+            {
+                var errorList = ModelState.ToDictionary(
+    kvp => kvp.Key,
+    kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+);
+
+                return View("CreateOrEdit", input);
+            }
 
             _db.Add(input);
             _db.SaveChanges();

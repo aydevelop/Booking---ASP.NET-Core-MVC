@@ -18,5 +18,12 @@ namespace Booking.Controllers
         {
             return View();
         }
+
+        [Route("/Home/HandleError/{code:int}")]
+        public IActionResult HandleError(int? code)
+        {
+            ViewData["ErrorMessage"] = $"Error occurred. The ErrorCode is: {code}";
+            return View();
+        }
     }
 }

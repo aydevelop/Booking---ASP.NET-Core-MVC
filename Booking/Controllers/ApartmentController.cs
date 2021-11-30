@@ -18,6 +18,7 @@ namespace Booking.Controllers
 
         public override ActionResult Index()
         {
+
             var items = _db.Apartments
                 .Include(q => q.Hoster)
                 .Include(q => q.Location)
