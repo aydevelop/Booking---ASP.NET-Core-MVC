@@ -1,64 +1,64 @@
-﻿using Booking.DAL;
+﻿using Booking.BLL.Contracts;
 using Booking.DAL.Enums;
 using Booking.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Booking.Controllers
 {
     public class ApartmentController : BaseController<Apartment>
     {
-        private readonly AppDbContext _db;
+        private readonly IApartmentRepository _dbApartment;
+        private readonly IHosterRepository _dbHoster;
+        private readonly ILocationRepository _dbLocation;
 
-        public ApartmentController(AppDbContext db) : base(db)
+        public ApartmentController(IApartmentRepository dbApartment,
+            IHosterRepository dbHoster,
+            ILocationRepository dbLocation) : base(dbApartment)
         {
-            _db = db;
+            _dbApartment = dbApartment;
+            _dbHoster = dbHoster;
+            _dbLocation = dbLocation;
         }
 
-        public override ActionResult Index()
+        public override async Task<ActionResult> Index()
         {
-
-            var items = _db.Apartments
-                .Include(q => q.Hoster)
-                .Include(q => q.Location)
-                .ToList();
-
+            var items = await _dbApartment.GetWithInclude(new[] { "Location", "Hoster" });
             return View(items);
         }
 
-        public override ActionResult CreateOrEdit(int id)
+        public override async Task<ActionResult> CreateOrEdit(int id)
         {
-            LoadHostersLocations();
-            return base.CreateOrEdit(id);
+            await LoadHostersLocations();
+            return await base.CreateOrEdit(id);
         }
 
         [HttpPost]
-        public override ActionResult Create(Apartment input)
+        public override async Task<ActionResult> Create(Apartment input)
         {
             if (!ModelState.IsValid)
             {
-                LoadHostersLocations();
+                await LoadHostersLocations();
             }
 
-            return base.Create(input);
+            return await base.Create(input);
         }
 
         [HttpPost]
-        public override ActionResult Edit(Apartment input)
+        public override async Task<ActionResult> Edit(Apartment input)
         {
             if (!ModelState.IsValid)
             {
-                LoadHostersLocations();
+                await LoadHostersLocations();
             }
 
-            return base.Edit(input);
+            return await base.Edit(input);
         }
 
-        private void LoadHostersLocations()
+        private async Task LoadHostersLocations()
         {
-            ViewBag.Hosters = _db.Hosters.Where(q => q.State == HosterState.Active).ToList();
-            ViewBag.Locations = _db.Locations.Where(q => q.State == LocationState.Active).ToList();
+            ViewBag.Hosters = await _dbHoster.GetByFiler(q => q.State == HosterState.Active);
+            ViewBag.Locations = await _dbLocation.GetByFiler(q => q.State == LocationState.Active);
         }
     }
 }

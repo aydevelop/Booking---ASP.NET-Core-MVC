@@ -1,85 +1,71 @@
-﻿using Booking.DAL;
+﻿using Booking.BLL.Contracts;
 using Booking.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Booking.Controllers
 {
     public class BaseController<T> : Controller where T : BaseModel, new()
     {
-        private readonly AppDbContext _db;
+        private readonly IRepository<T> _db;
 
-        protected BaseController(AppDbContext db) => _db = db;
+        public BaseController(IRepository<T> db) => _db = db;
 
-        public virtual ActionResult Index()
+        public virtual async Task<ActionResult> Index()
         {
-            var items = _db.Set<T>().ToList();
+            var items = await _db.GetAll();
             return View(items);
         }
 
-        public virtual ActionResult Details(int id)
+        public virtual async Task<ActionResult> Details(int id)
         {
-            var item = _db.Set<T>().FirstOrDefault(q => q.Id == id);
+            var item = await _db.GetById(id);
             if (item == null) { return NotFound(); }
             return View(item);
         }
 
-        public virtual ActionResult CreateOrEdit(int id)
+        public virtual async Task<ActionResult> CreateOrEdit(int id)
         {
-            var item = _db.Set<T>().FirstOrDefault(s => s.Id == id);
+            var item = await _db.GetById(id);
             return View(item != null ? item : new T());
         }
 
         [HttpPost]
-        public virtual ActionResult Create(T input)
+        public virtual async Task<ActionResult> Create(T input)
         {
-            if (!ModelState.IsValid)
-            {
-                var errorList = ModelState.ToDictionary(
-    kvp => kvp.Key,
-    kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
-);
+            if (!ModelState.IsValid) { return View("CreateOrEdit", input); }
 
-                return View("CreateOrEdit", input);
-            }
-
-            _db.Add(input);
-            _db.SaveChanges();
-
+            await _db.Add(input);
             return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
-        public virtual ActionResult Edit(T input)
+        public virtual async Task<ActionResult> Edit(T input)
         {
             if (!ModelState.IsValid) { return View("CreateOrEdit", input); }
-            var item = _db.Set<T>().FirstOrDefault(s => s.Id == input.Id);
+            var item = await _db.GetById(input.Id);
             if (item == null) { return NotFound(); }
 
-            _db.Entry(item).CurrentValues.SetValues(input);
-            _db.SaveChanges();
-
+            await _db.Update(input);
             return RedirectToAction(nameof(Index));
         }
 
 
-        public virtual ActionResult Delete(int id)
+        public virtual async Task<ActionResult> Delete(int id)
         {
-            var item = _db.Set<T>().FirstOrDefault(s => s.Id == id);
+            var item = await _db.GetById(id);
             if (item == null) { return NotFound(); }
 
             return View(item);
         }
 
         [HttpPost]
-        public virtual IActionResult DeleteLocation(int id)
+        public virtual async Task<ActionResult> DeleteItem(int id)
         {
-            var item = _db.Set<T>().FirstOrDefault(s => s.Id == id);
+            T item = await _db.GetById(id);
             if (item == null) { return NotFound(); }
 
-            _db.Set<T>().Remove(item);
-            _db.SaveChanges();
-
+            await _db.Delete(item);
             return RedirectToAction(nameof(Index));
         }
     }

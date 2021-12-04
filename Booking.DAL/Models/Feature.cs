@@ -8,6 +8,4 @@ namespace Booking.DAL.Models
         public string Name { get; set; }
         public FeatureState State { get; set; }
     }
-
-
 }

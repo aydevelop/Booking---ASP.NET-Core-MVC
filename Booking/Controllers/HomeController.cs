@@ -1,29 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Booking.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger) => _logger = logger;
-
-        public IActionResult Index()
+        public ActionResult Index()
         {
             return View();
         }
 
-        public IActionResult Privacy()
+        public ActionResult Privacy()
         {
             return View();
         }
 
-        [Route("/Home/HandleError/{code:int}")]
-        public IActionResult HandleError(int? code)
+        [Route("/HandleError/{code:int}")]
+        public ActionResult HandleError(int code = 500)
         {
-            ViewData["ErrorMessage"] = $"Error occurred. The ErrorCode is: {code}";
-            return View();
+            ViewData["Message"] = $"Error occurred with ErrorCode: {code}";
+            return View("Error");
+        }
+
+        [Route("/ExceptionHandler")]
+        public ActionResult ExceptionHandler()
+        {
+            ViewData["Message"] = $"Exception occurred with RequestId: {HttpContext.TraceIdentifier}";
+            return View("Error");
         }
     }
 }

@@ -1,5 +1,6 @@
 using Booking.DAL;
-using FluentValidation.AspNetCore;
+using Booking.Extensions;
+using Booking.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -22,30 +23,29 @@ namespace Booking
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AppDbContext>());
-
-            services.AddDbContext<AppDbContext>(
-                options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc(
                 options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
+
+            services.AddDInjection();
+            services.AddLibrary();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseStatusCodePages();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseStatusCodePagesWithReExecute("/error/{0}");
-                app.UseExceptionHandler("/error");
+                app.UseExceptionHandler("/ExceptionHandler");
                 app.UseHsts();
             }
 
-            app.UseStatusCodePagesWithReExecute("/Home/HandleError/{0}");
+            app.UseMiddleware<ExceptionMiddleware>();
+            app.UseStatusCodePagesWithReExecute("/HandleError/{0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
