@@ -1,5 +1,6 @@
 ﻿using Booking.BLL.Validators;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Booking.Extensions
@@ -11,6 +12,11 @@ namespace Booking.Extensions
             services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ApartmentValidator>());
 
             return services;
+        }
+
+        public static IApplicationBuilder AddLibrary(this IApplicationBuilder app)
+        {
+            return app;
         }
     }
 }

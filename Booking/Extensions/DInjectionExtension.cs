@@ -12,6 +12,9 @@ namespace Booking.Extensions
             services.AddScoped<IApartmentRepository, ApartmentRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<IHosterRepository, HosterRepository>();
+            services.AddScoped<IExplorerRepository, ExplorerRepository>();
+            services.AddScoped<IFeatureRepository, FeatureRepository>();
+            services.AddScoped<IRentRepository, RentRepository>();
 
             return services;
         }

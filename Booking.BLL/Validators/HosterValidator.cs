@@ -7,8 +7,8 @@ namespace Booking.BLL.Validators
     {
         public HosterValidator()
         {
-            RuleFor(p => p.FirstName).NotEmpty().MaximumLength(100);
-            RuleFor(p => p.LastName).NotEmpty().MaximumLength(100);
+            RuleFor(p => p.FirstName).NotEmpty().MaximumLength(50);
+            RuleFor(p => p.LastName).NotEmpty().MaximumLength(50);
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     public enum FeatureState
     {
-        Draft, Active, Inactive
+        Active, Inactive, Draft
     }
 }

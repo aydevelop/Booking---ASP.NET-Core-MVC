@@ -2,6 +2,6 @@
 {
     public enum ApartmentState
     {
-        Draft, Active, Inactive
+        Active, Inactive, Draft
     }
 }

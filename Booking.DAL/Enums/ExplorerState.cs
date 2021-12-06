@@ -2,6 +2,6 @@
 {
     public enum ExplorerState
     {
-        Requested, Approved, Rejected, Inactive
+        Active, Inactive, Banned
     }
 }

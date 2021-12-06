@@ -10,6 +10,9 @@ namespace Booking.DAL
         public DbSet<Apartment> Apartments { get; set; }
         public DbSet<Hoster> Hosters { get; set; }
         public DbSet<Location> Locations { get; set; }
+        public DbSet<Explorer> Explorers { get; set; }
+        public DbSet<Feature> Features { get; set; }
+        public DbSet<Rent> Rents { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         { }

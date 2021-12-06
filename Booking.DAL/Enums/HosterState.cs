@@ -2,6 +2,6 @@
 {
     public enum HosterState
     {
-        Draft, Active, Inactive
+        Active, Inactive, Draft
     }
 }

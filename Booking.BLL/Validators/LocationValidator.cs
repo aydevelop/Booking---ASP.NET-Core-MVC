@@ -13,8 +13,9 @@ namespace Booking.BLL.Validators
         public LocationValidator(AppDbContext db)
         {
             _db = db;
-            RuleFor(p => p.Name).NotEmpty().MaximumLength(200);
-            RuleFor(p => p.Name).Must((item) => IsDuplicate(item)).WithMessage("Location already exists");
+
+            RuleFor(p => p.Name).NotEmpty().MaximumLength(100);
+            RuleFor(p => p.Name).Must((item) => IsNotDuplicate(item)).WithMessage("Location already exists");
         }
 
         protected override bool PreValidate(ValidationContext<Location> context, FluentValidation.Results.ValidationResult result)
@@ -23,11 +24,15 @@ namespace Booking.BLL.Validators
             return base.PreValidate(context, result);
         }
 
-        private bool IsDuplicate(string name)
+        private bool IsNotDuplicate(string name)
         {
-            if (_model?.Id > 0) { return true; }
+            var query = _db.Locations.AsQueryable();
+            if (_model?.Id > 0)
+            {
+                query = query.Where(q => q.Id != _model.Id);
+            }
 
-            var location = _db.Locations.FirstOrDefault(q => q.Name == name);
+            var location = query.FirstOrDefault(q => q.Name == name);
             if (location == null)
             {
                 return true;
@@ -35,6 +40,5 @@ namespace Booking.BLL.Validators
 
             return false;
         }
-
     }
 }

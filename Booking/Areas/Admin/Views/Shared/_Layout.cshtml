@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Booking</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <script defer src="https://friconix.com/cdn/friconix.js"></script>
+</head>
+<body>
+    <main>
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="/"><img src="~/img/booking.png" alt="booking.png" class="logo" /></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item @Html.IsSelected(actions: "Index", controllers: "Rent")">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Rent" asp-action="Index">Rents</a>
+                        </li>
+                        <li class="nav-item @Html.IsSelected(actions: "Index", controllers: "Apartment")">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Apartment" asp-action="Index">Apartments</a>
+                        </li>
+                        <li class="nav-item @Html.IsSelected(actions: "Index", controllers: "Hoster")">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Hoster" asp-action="Index">Hosters</a>
+                        </li>
+                        <li class="nav-item @Html.IsSelected(actions: "Index", controllers: "Explorer")">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Explorer" asp-action="Index">Explorers</a>
+                        </li>
+                        <li class="nav-item @Html.IsSelected(actions: "Index", controllers: "Feature")">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Feature" asp-action="Index">Features</a>
+                        </li>
+                        <li class="nav-item @Html.IsSelected(actions: "Index", controllers: "Location")">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Location" asp-action="Index">Locations</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+
+            <div class="content">
+                @RenderBody()
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer text-center">
+        <div class="container">
+            &copy; Booking
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -8,7 +8,7 @@ namespace Booking.DAL.Configurations
     {
         public void Configure(EntityTypeBuilder<Location> builder)
         {
-            builder.Property(note => note.Name).IsRequired().HasMaxLength(200);
+            builder.Property(note => note.Name).IsRequired().HasMaxLength(100);
             builder.HasIndex(note => note.Name).IsUnique();
         }
     }

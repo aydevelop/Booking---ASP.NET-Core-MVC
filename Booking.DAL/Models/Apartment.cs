@@ -8,7 +8,7 @@ namespace Booking.DAL.Models
         public string Name { get; set; }
         public string Address { get; set; }
         public double AvgScore { get; set; }
-        [Display(Name = "MaxDuration (Days)")]
+        [Display(Name = "MaxDuration")]
         public int MaxDurationInDays { get; set; }
         public ApartmentState State { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using Booking.BLL.Contracts;
 using Booking.DAL;
 using Microsoft.EntityFrameworkCore;
+using Polly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,15 @@ namespace Booking.BLL.Repositories
 
         private async Task SaveAsync()
         {
-            await _db.SaveChangesAsync();
+            var policy = Policy.Handle<Exception>().WaitAndRetryAsync(new[]
+            {
+                TimeSpan.FromMilliseconds(100),
+                TimeSpan.FromMilliseconds(200),
+                TimeSpan.FromMilliseconds(300),
+                TimeSpan.FromMilliseconds(400),
+            });
+
+            await policy.ExecuteAsync(async () => await _db.SaveChangesAsync());
         }
 
         public async Task<T> GetById(int id)

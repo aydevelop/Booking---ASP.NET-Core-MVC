@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Booking.DAL.Models.Rent>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2 class="text-center">Rents</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ExplorerId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppartementId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ExplorerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AppartementId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.State)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -5,7 +5,7 @@ namespace Booking.DAL.Models
 {
     public class Rent : BaseModel
     {
-        public int VisitorId { get; set; }
+        public int ExplorerId { get; set; }
         public int AppartementId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

@@ -8,8 +8,8 @@ namespace Booking.DAL.Configurations
     {
         public void Configure(EntityTypeBuilder<Hoster> builder)
         {
-            builder.Property(note => note.FirstName).IsRequired().HasMaxLength(100);
-            builder.Property(note => note.LastName).IsRequired().HasMaxLength(100);
+            builder.Property(note => note.FirstName).IsRequired().HasMaxLength(50);
+            builder.Property(note => note.LastName).IsRequired().HasMaxLength(50);
         }
     }
 }

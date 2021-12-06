@@ -41,30 +41,81 @@ namespace Booking.DAL
             context.SaveChanges();
 
 
+            var features = new List<Feature>
+            {
+                new Feature { Name="Bar", State=FeatureState.Active },
+                new Feature { Name="WiFi", State=FeatureState.Active },
+                new Feature { Name="Room Service", State=FeatureState.Draft },
+                new Feature { Name="Pets Allowed", State=FeatureState.Active },
+                new Feature { Name="Parking", State=FeatureState.Inactive },
+                new Feature { Name="Heating", State=FeatureState.Active }
+            };
+            context.Features.AddRange(features);
+            context.SaveChanges();
+
+
+            var explorers = new List<Explorer>
+            {
+                new Explorer{FirstName="Tim", LastName="Flynn", Email="tim@mail.com", Birthday=DateTime.Now.AddYears(-20), State=ExplorerState.Active},
+                new Explorer{FirstName="Michael", LastName="Hughey", Email="michael@mail.com", Birthday=DateTime.Now.AddYears(-30), State=ExplorerState.Banned, DateFromState=DateTime.Now.AddDays(3)},
+                new Explorer{FirstName="Stephen", LastName="Sikes", Email="stephen@mail.com", Birthday=DateTime.Now.AddYears(-40), State=ExplorerState.Active}
+            };
+            context.Explorers.AddRange(explorers);
+            context.SaveChanges();
+
+
             var apartments = new List<Apartment>
             {
                 new Apartment {
                     Name="Mountain Residence", Address="Chaikovskogo 127",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
-                    Hoster = context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
-                    Location= context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First(),
+                    Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
+                    Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First(),
                 },
                 new Apartment {
-                    Name="Cities Galleryl", Address="Tomashivs'koho 4",
+                    Name="Cities Gallery", Address="Tomashivs'koho 4",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
-                    Hoster = context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
-                    Location= context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First(),
+                    Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
+                    Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First(),
                 },
                 new Apartment {
                     Name="Opera Passage", Address="Baseina Street 77a",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
-                    Hoster = context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
-                    Location= context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First(),
+                    Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
+                    Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First(),
                 }
             };
 
             context.Apartments.AddRange(apartments);
             context.SaveChanges();
+
+            var rents = new List<Rent>
+            {
+                new Rent {
+                    ExplorerId=context.Explorers.Where(q=>q.State==ExplorerState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
+                    AppartementId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
+                    StartDate=DateTime.Now.AddDays(2), EndDate=DateTime.Now.AddDays(4), State = RentState.Approved
+                },
+                 new Rent {
+                    ExplorerId=context.Explorers.Where(q=>q.State==ExplorerState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
+                    AppartementId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
+                    StartDate=DateTime.Now.AddDays(3), EndDate=DateTime.Now.AddDays(2), State = RentState.Requested
+                },
+                new Rent {
+                    ExplorerId=context.Explorers.Where(q=>q.State==ExplorerState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
+                    AppartementId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
+                    StartDate=DateTime.Now.AddDays(4), EndDate=DateTime.Now.AddDays(1), State = RentState.Approved
+                },
+                new Rent {
+                    ExplorerId=context.Explorers.Where(q=>q.State==ExplorerState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
+                    AppartementId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
+                    StartDate=DateTime.Now.AddDays(1), EndDate=DateTime.Now.AddDays(2), State = RentState.Requested
+                },
+            };
+
+            context.Rents.AddRange(rents);
+            context.SaveChanges();
+
         }
     }
 }

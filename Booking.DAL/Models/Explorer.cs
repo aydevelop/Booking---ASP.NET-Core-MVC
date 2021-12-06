@@ -10,7 +10,7 @@ namespace Booking.DAL.Models
         public string Email { get; set; }
         public DateTime Birthday { get; set; }
         public ExplorerState State { get; set; }
-        public ExplorerState StateFromDate { get; set; }
+        public DateTime? DateFromState { get; set; }
     }
 
 

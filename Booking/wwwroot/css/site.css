@@ -27,6 +27,17 @@ body {
     margin-right: 30px;
 }
 
+.logo2-body {
+    position: relative;
+}
+
+.logo2 {
+    width: 30px;
+    position: absolute;
+    right: 25px;
+    bottom: 25px;
+}
+
 .blank {
     width: 550px;
     margin-top: 40px;
@@ -50,6 +61,10 @@ body {
     font-size: 17px;
     position: relative;
 }
+
+    .navbar .nav-link {
+        margin-right: 15px;
+    }
 
     .navbar .navbar-nav {
         font-weight: 500;

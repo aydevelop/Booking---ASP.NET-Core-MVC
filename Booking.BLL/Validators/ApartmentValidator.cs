@@ -15,7 +15,8 @@ namespace Booking.BLL.Validators
             _db = db;
 
             RuleFor(p => p.Name).NotEmpty().MaximumLength(100);
-            RuleFor(p => p.Name).Must((item) => IsDuplicate(item)).WithMessage("Apartment already exists");
+            RuleFor(p => p.Name).Must((item) => IsNotDuplicate(item)).WithMessage("Apartment already exists");
+            RuleFor(p => p.Address).NotEmpty().MaximumLength(200);
         }
 
         protected override bool PreValidate(ValidationContext<Apartment> context, FluentValidation.Results.ValidationResult result)
@@ -24,11 +25,15 @@ namespace Booking.BLL.Validators
             return base.PreValidate(context, result);
         }
 
-        private bool IsDuplicate(string name)
+        private bool IsNotDuplicate(string name)
         {
-            if (_model?.Id > 0) { return true; }
+            var query = _db.Apartments.AsQueryable();
+            if (_model?.Id > 0)
+            {
+                query = query.Where(q => q.Id != _model.Id);
+            }
 
-            var location = _db.Apartments.FirstOrDefault(q => q.Name == name);
+            var location = query.FirstOrDefault(q => q.Name == name);
             if (location == null)
             {
                 return true;
