@@ -4,35 +4,22 @@ using Booking.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Booking.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211206124624_ApartmentFix")]
+    partial class ApartmentFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("ApartmentFeature", b =>
-                {
-                    b.Property<int>("ApartmentsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FeaturesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ApartmentsId", "FeaturesId");
-
-                    b.HasIndex("FeaturesId");
-
-                    b.ToTable("ApartmentFeature");
-                });
 
             modelBuilder.Entity("Booking.DAL.Models.Apartment", b =>
                 {
@@ -399,21 +386,6 @@ namespace Booking.DAL.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("ApartmentFeature", b =>
-                {
-                    b.HasOne("Booking.DAL.Models.Apartment", null)
-                        .WithMany()
-                        .HasForeignKey("ApartmentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Booking.DAL.Models.Feature", null)
-                        .WithMany()
-                        .HasForeignKey("FeaturesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Booking.DAL.Models.Apartment", b =>

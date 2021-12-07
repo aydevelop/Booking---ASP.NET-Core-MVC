@@ -10,22 +10,15 @@ namespace Booking.Areas.Admin.Controllers
     [Area("Admin")]
     public class ApartmentController : BaseController<Apartment>
     {
-        private readonly IApartmentRepository _dbApartment;
-        private readonly IHosterRepository _dbHoster;
-        private readonly ILocationRepository _dbLocation;
+        private readonly IRepositories _db;
 
-        public ApartmentController(IApartmentRepository dbApartment,
-            IHosterRepository dbHoster,
-            ILocationRepository dbLocation) : base(dbApartment)
+        public ApartmentController(IRepositories db) : base(db.Apartments)
         {
-            _dbApartment = dbApartment;
-            _dbHoster = dbHoster;
-            _dbLocation = dbLocation;
+            _db = db;
         }
-
         public override async Task<ActionResult> Index()
         {
-            var items = await _dbApartment.GetWithInclude(new[] { "Location", "Hoster" });
+            var items = await _db.Apartments.GetWithInclude(new[] { "Location", "Hoster", "Features" });
             return View(items);
         }
 
@@ -59,8 +52,9 @@ namespace Booking.Areas.Admin.Controllers
 
         private async Task LoadHostersLocations()
         {
-            ViewBag.Hosters = await _dbHoster.GetByFiler(q => q.State == HosterState.Active);
-            ViewBag.Locations = await _dbLocation.GetByFiler(q => q.State == LocationState.Active);
+            ViewBag.Hosters = await _db.Hosters.GetByFiler(q => q.State == HosterState.Active);
+            ViewBag.Locations = await _db.Locations.GetByFiler(q => q.State == LocationState.Active);
+            ViewBag.Features = await _db.Features.GetByFiler(q => q.State == FeatureState.Active);
         }
     }
 }

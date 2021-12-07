@@ -1,8 +1,6 @@
 ﻿using Booking.BLL.Contracts;
 using Booking.DAL;
 using Booking.DAL.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Booking.BLL.Repositories
 {
@@ -13,11 +11,6 @@ namespace Booking.BLL.Repositories
         public ApartmentRepository(AppDbContext db) : base(db)
         {
             _db = db;
-        }
-
-        public Task<List<Apartment>> GetWithHosterAndLocation()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

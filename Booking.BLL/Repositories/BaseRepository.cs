@@ -43,6 +43,11 @@ namespace Booking.BLL.Repositories
             return _db.Set<T>().ToListAsync();
         }
 
+        public IQueryable<T> GetQueryable()
+        {
+            return _db.Set<T>().AsQueryable();
+        }
+
         public async Task<List<T>> GetByFiler(Expression<Func<T, bool>> predicate)
         {
             return await _db.Set<T>().Where(predicate).ToListAsync();

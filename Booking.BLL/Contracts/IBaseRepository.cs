@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -9,6 +10,7 @@ namespace Booking.BLL.Contracts
     {
         Task<T> GetById(int id);
         Task<List<T>> GetAll();
+        IQueryable<T> GetQueryable();
         Task<List<T>> GetByFiler(Expression<Func<T, bool>> predicate);
 
         Task Add(T entity);

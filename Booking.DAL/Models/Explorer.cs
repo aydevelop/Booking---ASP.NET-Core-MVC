@@ -1,5 +1,6 @@
 ﻿using Booking.DAL.Enums;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Booking.DAL.Models
 {
@@ -11,6 +12,15 @@ namespace Booking.DAL.Models
         public DateTime Birthday { get; set; }
         public ExplorerState State { get; set; }
         public DateTime? DateFromState { get; set; }
+
+        [NotMapped]
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
     }
 
 

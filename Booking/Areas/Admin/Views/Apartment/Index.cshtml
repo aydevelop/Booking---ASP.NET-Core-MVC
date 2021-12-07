@@ -4,7 +4,7 @@
     ViewData["Title"] = "Apartment";
 }
 
-<h2 style="text-align: center">Apartments</h2>
+<h2 class="text-center mt-5">Apartments</h2>
 
 <p>
     <a asp-area="admin" asp-action="CreateOrEdit">Create New</a>
@@ -34,13 +34,16 @@
                 @Html.DisplayNameFor(model => model.MaxDurationInDays)
             </th>
             <th>
+                Features
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.State)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (Apartment item in Model)
         {
             <tr>
                 <td>
@@ -63,6 +66,12 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.MaxDurationInDays)
+                </td>
+                <td>
+                    @foreach (var feature in item.Features)
+                    {
+                        @feature.Name <br />
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.State)

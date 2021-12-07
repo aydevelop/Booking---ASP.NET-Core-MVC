@@ -4,16 +4,16 @@
     ViewData["Title"] = "Index";
 }
 
-<h2 class="text-center">Rents</h2>
+<h2 class="text-center mt-5">Rents</h2>
 
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ExplorerId)
+                @Html.DisplayNameFor(model => model.Explorer)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AppartementId)
+                @Html.DisplayNameFor(model => model.Apartment)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.StartDate)
@@ -32,10 +32,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ExplorerId)
+                    @Html.DisplayFor(modelItem => item.Explorer.FullName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AppartementId)
+                    @Html.DisplayFor(modelItem => item.Apartment.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StartDate)

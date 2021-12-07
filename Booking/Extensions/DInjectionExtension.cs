@@ -9,6 +9,8 @@ namespace Booking.Extensions
         public static IServiceCollection AddDInjection(this IServiceCollection services)
         {
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+            services.AddScoped<IRepositories, Repositories>();
+
             services.AddScoped<IApartmentRepository, ApartmentRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<IHosterRepository, HosterRepository>();

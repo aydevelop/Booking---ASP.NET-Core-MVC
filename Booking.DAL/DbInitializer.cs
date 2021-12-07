@@ -19,7 +19,6 @@ namespace Booking.DAL
 
             var locations = new List<Location>
             {
-                new Location { Name="Kyiv", State=LocationState.Active },
                 new Location { Name="Lviv", State=LocationState.Active },
                 new Location { Name="Odesa", State=LocationState.Active },
                 new Location { Name="Poltava", State=LocationState.Active },
@@ -45,8 +44,6 @@ namespace Booking.DAL
             {
                 new Feature { Name="Bar", State=FeatureState.Active },
                 new Feature { Name="WiFi", State=FeatureState.Active },
-                new Feature { Name="Room Service", State=FeatureState.Draft },
-                new Feature { Name="Pets Allowed", State=FeatureState.Active },
                 new Feature { Name="Parking", State=FeatureState.Inactive },
                 new Feature { Name="Heating", State=FeatureState.Active }
             };
@@ -71,18 +68,33 @@ namespace Booking.DAL
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
                     Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First(),
+                    Features=new[]
+                    {
+                        context.Features.OrderBy(q=>Guid.NewGuid()).First(),
+                        context.Features.OrderBy(q=>Guid.NewGuid()).First(),
+                    }
                 },
                 new Apartment {
                     Name="Cities Gallery", Address="Tomashivs'koho 4",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
                     Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First(),
+                    Features=new[]
+                    {
+                        context.Features.OrderBy(q=>Guid.NewGuid()).First(),
+                        context.Features.OrderBy(q=>Guid.NewGuid()).First(),
+                    }
                 },
                 new Apartment {
                     Name="Opera Passage", Address="Baseina Street 77a",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
                     Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First(),
+                    Features=new[]
+                    {
+                        context.Features.OrderBy(q=>Guid.NewGuid()).First(),
+                        context.Features.OrderBy(q=>Guid.NewGuid()).First(),
+                    }
                 }
             };
 
@@ -93,22 +105,22 @@ namespace Booking.DAL
             {
                 new Rent {
                     ExplorerId=context.Explorers.Where(q=>q.State==ExplorerState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
-                    AppartementId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
+                    ApartmentId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
                     StartDate=DateTime.Now.AddDays(2), EndDate=DateTime.Now.AddDays(4), State = RentState.Approved
                 },
                  new Rent {
                     ExplorerId=context.Explorers.Where(q=>q.State==ExplorerState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
-                    AppartementId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
+                    ApartmentId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
                     StartDate=DateTime.Now.AddDays(3), EndDate=DateTime.Now.AddDays(2), State = RentState.Requested
                 },
                 new Rent {
                     ExplorerId=context.Explorers.Where(q=>q.State==ExplorerState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
-                    AppartementId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
+                    ApartmentId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
                     StartDate=DateTime.Now.AddDays(4), EndDate=DateTime.Now.AddDays(1), State = RentState.Approved
                 },
                 new Rent {
                     ExplorerId=context.Explorers.Where(q=>q.State==ExplorerState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
-                    AppartementId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
+                    ApartmentId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
                     StartDate=DateTime.Now.AddDays(1), EndDate=DateTime.Now.AddDays(2), State = RentState.Requested
                 },
             };

@@ -1,4 +1,5 @@
 ﻿using Booking.DAL.Enums;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Booking.DAL.Models
@@ -19,5 +20,7 @@ namespace Booking.DAL.Models
         [Display(Name = "Location")]
         public int LocationId { get; set; }
         public virtual Location Location { get; set; }
+
+        public virtual ICollection<Feature> Features { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class Grade : BaseModel
     {
-        public int AppartementId { get; set; }
+        public int ApartementId { get; set; }
         public int VisitorId { get; set; }
         public double Score { get; set; }
     }
