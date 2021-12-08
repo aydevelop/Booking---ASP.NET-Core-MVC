@@ -9,7 +9,7 @@ namespace Booking.Extensions
     {
         public static IServiceCollection AddLibrary(this IServiceCollection services)
         {
-            services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ApartmentValidator>());
+            services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LocationValidator>());
 
             return services;
         }

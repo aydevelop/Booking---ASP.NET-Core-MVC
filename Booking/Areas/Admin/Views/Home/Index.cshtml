@@ -1,4 +1,5 @@
-﻿@model Booking.Areas.Admin.ViewModels.AdminHomeIndexVM
+﻿@using Booking.BLL.ViewModels
+@model AdminHomeIndexVM
 
 @{
     ViewData["Title"] = "Admin Panel";
@@ -16,7 +17,7 @@
                 <div class="card mb-4">
                     <div class="card-body logo2-body">
                         <h6 class="card-title">Rents:</h6>
-                        <p class="card-text green-text"><i class="fas fa-angle-double-up fa-2x"></i><span class="ml-2" style="font-size: 30px;">@Model.Rents.Count</span></p>
+                        <p class="card-text green-text"><i class="fas fa-angle-double-up fa-2x"></i><span class="ml-2" style="font-size: 30px;">@Model.RentsList.Count</span></p>
                         <img src="~/img/3d-house.svg" alt="booking.png" class="logo2" />
 
                     </div>
@@ -53,7 +54,7 @@
                 <div class="card mb-4">
                     <div class="card-body logo2-body">
                         <h6 class="card-title">Apartments:</h6>
-                        <p class="card-text green-text"><i class="fas fa-angle-double-up fa-2x"></i><span class="ml-2" style="font-size: 30px;">@Model.Apartments</span></p>
+                        <p class="card-text green-text"><i class="fas fa-angle-double-up fa-2x"></i><span class="ml-2" style="font-size: 30px;">@Model.ApartmentsList.Count</span></p>
                         <img src="~/img/3d-house.svg" alt="booking.png" class="logo2" />
                     </div>
                 </div>
@@ -86,8 +87,58 @@
         </div>
     </div>
 
-    <h3 class="text-center mt-5 mb-4 font-weight-bold">Rents</h3>
+    <h3 class="text-center mt-5 mb-4 font-weight-bold title-small">Apartments</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Hoster</th>
+                <th>Location</th>
+                <th>Address</th>
+                <th>AvgScore</th>
+                <th>MaxDuration</th>
+                <th>Features</th>
+                <th>State</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Apartment item in Model.ApartmentsList)
+            {
+                            <tr>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.Hoster.FullName)
+                            </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.Location.Name)
+                            </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.AvgScore)
+                            </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.MaxDurationInDays) days
+                            </td>
+                        <td>
+                        @foreach (var feature in item.Features)
+                        {
+                            @feature.Name <br />
+                        }
+                            </td>
+                        <td>
+                        @Html.DisplayFor(modelItem => item.State)
+                            </td>
+                    </tr>
+            }
+        </tbody>
+    </table>
 
+    <h3 class="text-center mt-5 mb-4 font-weight-bold title-small">Rents</h3>
     <table class="table table-striped mb-5">
         <thead>
             <tr>
@@ -98,37 +149,37 @@
                     Apartment
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Rents[0].StartDate)
+                    @Html.DisplayNameFor(model => model.RentsList[0].StartDate)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Rents[0].EndDate)
+                    @Html.DisplayNameFor(model => model.RentsList[0].EndDate)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Rents[0].State)
+                    @Html.DisplayNameFor(model => model.RentsList[0].State)
                 </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Rents)
+            @foreach (var item in Model.RentsList)
             {
-                <tr>
-                    <td>
+                        <tr> 
+                        <td>
                         @Html.DisplayFor(modelItem => item.Explorer.FullName)
-                    </td>
-                    <td>
+                            </td>
+                        <td>
                         @Html.DisplayFor(modelItem => item.Apartment.Name)
-                    </td>
-                    <td>
+                            </td>
+                        <td>
                         @Html.DisplayFor(modelItem => item.StartDate)
-                    </td>
-                    <td>
+                            </td>
+                        <td>
                         @Html.DisplayFor(modelItem => item.EndDate)
-                    </td>
-                    <td>
+                            </td>
+                        <td>
                         @Html.DisplayFor(modelItem => item.State)
-                    </td>
-                </tr>
+                            </td>
+                    </tr>
             }
         </tbody>
     </table>

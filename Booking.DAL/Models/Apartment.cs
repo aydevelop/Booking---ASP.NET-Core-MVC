@@ -10,7 +10,7 @@ namespace Booking.DAL.Models
         public string Address { get; set; }
         public double AvgScore { get; set; }
         [Display(Name = "MaxDuration")]
-        public int MaxDurationInDays { get; set; }
+        public int MaxDurationInDays { get; set; } = 1;
         public ApartmentState State { get; set; }
 
         [Display(Name = "Hoster")]
@@ -21,6 +21,6 @@ namespace Booking.DAL.Models
         public int LocationId { get; set; }
         public virtual Location Location { get; set; }
 
-        public virtual ICollection<Feature> Features { get; set; }
+        public virtual List<Feature> Features { get; set; }
     }
 }

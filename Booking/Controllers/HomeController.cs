@@ -6,8 +6,7 @@ namespace Booking.Controllers
     {
         public ActionResult Index()
         {
-            return Redirect("/admin");
-            //return View();
+            return View();
         }
 
         public ActionResult Privacy()

@@ -8,6 +8,6 @@ namespace Booking.DAL.Models
         public string Name { get; set; }
         public FeatureState State { get; set; }
 
-        public virtual ICollection<Apartment> Apartments { get; set; }
+        public virtual List<Apartment> Apartments { get; set; }
     }
 }

@@ -1,0 +1,64 @@
+﻿@using Booking.BLL.ViewModels
+@model HosterApartmentCreateVM
+
+@{
+    string action = "Create";
+    ViewData["Title"] = action;
+}
+
+<form asp-area="HosterArea" asp-action="CreateItem">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="apartment.Id" class="form-control" />
+
+    <div class="form-group">
+        <label asp-for="apartment.Name" class="control-label"></label>
+        <input asp-for="apartment.Name" class="form-control" />
+        <span asp-validation-for="apartment.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="apartment.HosterId" class="control-label"></label>
+        <select asp-for="apartment.HosterId" class="form-control"
+                asp-items="@(new SelectList(@Model.Hosters, "Id", "FullName"))"></select>
+        <span asp-validation-for="apartment.HosterId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="apartment.LocationId" class="control-label"></label>
+        <select asp-for="apartment.LocationId" class="form-control"
+                asp-items="@(new SelectList(@Model.Locations, "Id", "Name"))"></select>
+        <span asp-validation-for="apartment.LocationId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="apartment.Address" class="control-label"></label>
+        <input asp-for="apartment.Address" class="form-control" />
+        <span asp-validation-for="apartment.Address" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="apartment.MaxDurationInDays" class="control-label"></label>
+        <input asp-for="apartment.MaxDurationInDays" min="1" class="form-control" />
+        <span asp-validation-for="apartment.MaxDurationInDays" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="apartment.State" class="control-label"></label>
+        <select asp-for="apartment.State" class="form-control" asp-items="Html.GetEnumSelectList<ApartmentState>()"></select>
+        <span asp-validation-for="apartment.State" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Features</label>
+        <div class="box-features">
+            @for (int i = 0; i < @Model.AssignedFeatures.Count; i++)
+            {
+                @Html.HiddenFor(m=>Model.AssignedFeatures[i].FeatureId)
+                @Html.CheckBoxFor(m=> Model.AssignedFeatures[i].Assigned)
+                <label>@Model.AssignedFeatures[i].FeatureName</label>
+                <br />
+            }
+        </div>
+    </div>
+    <div class="form-group mt-4">
+        <input type="submit" value="@action" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

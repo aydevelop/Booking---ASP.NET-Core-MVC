@@ -68,7 +68,7 @@ namespace Booking.DAL
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
                     Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First(),
-                    Features=new[]
+                    Features=new List<Feature>
                     {
                         context.Features.OrderBy(q=>Guid.NewGuid()).First(),
                         context.Features.OrderBy(q=>Guid.NewGuid()).First(),
@@ -79,7 +79,7 @@ namespace Booking.DAL
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
                     Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First(),
-                    Features=new[]
+                    Features=new List<Feature>
                     {
                         context.Features.OrderBy(q=>Guid.NewGuid()).First(),
                         context.Features.OrderBy(q=>Guid.NewGuid()).First(),
@@ -90,7 +90,7 @@ namespace Booking.DAL
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
                     Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First(),
-                    Features=new[]
+                    Features=new List<Feature>
                     {
                         context.Features.OrderBy(q=>Guid.NewGuid()).First(),
                         context.Features.OrderBy(q=>Guid.NewGuid()).First(),
