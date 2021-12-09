@@ -8,5 +8,6 @@
         public IExplorerRepository Explorers { get; }
         public IFeatureRepository Features { get; }
         public IRentRepository Rents { get; }
+        public IApartmentFeatureRepository ApartmentFeatures { get; }
     }
 }

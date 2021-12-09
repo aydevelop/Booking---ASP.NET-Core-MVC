@@ -13,6 +13,7 @@ namespace Booking.BLL.Repositories
         private ILocationRepository _location;
         private IHosterRepository _hoster;
         private IApartmentRepository _apartment;
+        private IApartmentFeatureRepository _apartmentFeature;
 
         public Repositories(IServiceProvider services)
         {
@@ -30,6 +31,8 @@ namespace Booking.BLL.Repositories
         public IFeatureRepository Features => _feature ??= _services.GetRequiredService<IFeatureRepository>();
 
         public IRentRepository Rents => _rent ??= _services.GetRequiredService<IRentRepository>();
+
+        public IApartmentFeatureRepository ApartmentFeatures => _apartmentFeature ??= _services.GetRequiredService<IApartmentFeatureRepository>();
 
     }
 }

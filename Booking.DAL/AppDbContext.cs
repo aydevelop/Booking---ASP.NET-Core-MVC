@@ -13,6 +13,7 @@ namespace Booking.DAL
         public DbSet<Explorer> Explorers { get; set; }
         public DbSet<Feature> Features { get; set; }
         public DbSet<Rent> Rents { get; set; }
+        public DbSet<ApartmentFeature> ApartmentFeature { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         { }

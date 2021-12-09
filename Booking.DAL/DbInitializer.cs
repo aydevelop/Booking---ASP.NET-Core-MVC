@@ -68,37 +68,33 @@ namespace Booking.DAL
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
                     Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First(),
-                    Features=new List<Feature>
-                    {
-                        context.Features.OrderBy(q=>Guid.NewGuid()).First(),
-                        context.Features.OrderBy(q=>Guid.NewGuid()).First(),
-                    }
                 },
                 new Apartment {
                     Name="Cities Gallery", Address="Tomashivs'koho 4",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
-                    Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First(),
-                    Features=new List<Feature>
-                    {
-                        context.Features.OrderBy(q=>Guid.NewGuid()).First(),
-                        context.Features.OrderBy(q=>Guid.NewGuid()).First(),
-                    }
+                    Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First()
                 },
                 new Apartment {
                     Name="Opera Passage", Address="Baseina Street 77a",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
-                    Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First(),
-                    Features=new List<Feature>
-                    {
-                        context.Features.OrderBy(q=>Guid.NewGuid()).First(),
-                        context.Features.OrderBy(q=>Guid.NewGuid()).First(),
-                    }
+                    Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First()
                 }
             };
 
             context.Apartments.AddRange(apartments);
+            context.SaveChanges();
+
+            foreach (Apartment item in context.Apartments)
+            {
+                context.ApartmentFeature.Add(new ApartmentFeature()
+                {
+                    ApartmentId = item.Id,
+                    FeatureId = context.Features.Where(q => q.State == FeatureState.Active)
+                    .OrderBy(q => Guid.NewGuid()).First().Id,
+                });
+            }
             context.SaveChanges();
 
             var rents = new List<Rent>
@@ -127,7 +123,6 @@ namespace Booking.DAL
 
             context.Rents.AddRange(rents);
             context.SaveChanges();
-
         }
     }
 }

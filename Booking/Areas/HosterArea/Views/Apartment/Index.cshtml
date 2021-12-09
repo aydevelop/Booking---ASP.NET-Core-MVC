@@ -65,14 +65,18 @@
                 <td>
                     @foreach (var feature in item.Features)
                     {
-                        @feature.Name <br />
+                        @feature.Feature?.Name <br />
                     }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.State)
                 </td>
                 <td>
-                    <partial name="Partials/_GroupButtonPartial" model="@item.Id" />
+                    <div class="btn-group group-action" role="group">
+                        <a class="btn btn-primary btn-sm btn-primary" style="width:70px" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                        <a class="btn btn-primary btn-sm btn-success" style="width:70px" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                        <a class="btn btn-primary btn-sm btn-danger" style="width:70px" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </div>
                 </td>
             </tr>
         }

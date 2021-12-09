@@ -105,35 +105,35 @@
         <tbody>
             @foreach (Apartment item in Model.ApartmentsList)
             {
-                            <tr>
-                        <td>
+                <tr>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                        <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Hoster.FullName)
-                            </td>
-                        <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Location.Name)
-                            </td>
-                        <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Address)
-                            </td>
-                        <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.AvgScore)
-                            </td>
-                        <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.MaxDurationInDays) days
-                            </td>
-                        <td>
+                    </td>
+                    <td>
                         @foreach (var feature in item.Features)
                         {
-                            @feature.Name <br />
+                            @feature.Feature?.Name <br />
                         }
-                            </td>
-                        <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.State)
-                            </td>
-                    </tr>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
@@ -163,23 +163,23 @@
         <tbody>
             @foreach (var item in Model.RentsList)
             {
-                        <tr> 
-                        <td>
+                <tr>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Explorer.FullName)
-                            </td>
-                        <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Apartment.Name)
-                            </td>
-                        <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.StartDate)
-                            </td>
-                        <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.EndDate)
-                            </td>
-                        <td>
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.State)
-                            </td>
-                    </tr>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

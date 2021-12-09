@@ -2,11 +2,11 @@
 @model HosterApartmentCreateVM
 
 @{
-    string action = "Create";
+    string action = "Edit";
     ViewData["Title"] = action;
 }
 
-<form asp-area="HosterArea" asp-action="CreateItem">
+<form asp-area="HosterArea" asp-action="EditItem">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="apartment.Id" class="form-control" />
 

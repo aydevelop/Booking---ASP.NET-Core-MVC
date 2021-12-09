@@ -19,7 +19,7 @@ namespace Booking.Areas.Admin.Controllers
         {
             AdminHomeIndexVM model = new AdminHomeIndexVM();
             model.RentsList = await _db.Rents.GetWithInclude(new[] { "Explorer", "Apartment" });
-            model.ApartmentsList = await _db.Apartments.GetWithInclude(new[] { "Location", "Hoster", "Features" });
+            model.ApartmentsList = await _db.Apartments.GetApartmentsWithDependencies();
             model.Hosters = await _db.Rents.Count();
             model.Explorers = await _db.Explorers.Count();
             model.Features = await _db.Features.Count();
