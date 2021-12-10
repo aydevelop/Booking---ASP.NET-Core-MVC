@@ -17,10 +17,13 @@ namespace Booking.Controllers
             return View(items);
         }
 
-        public virtual async Task<ActionResult> Details(int id)
+        public virtual async Task<ActionResult> Details(int? id)
         {
-            var item = await _db.GetById(id);
+            if (id == null) { return BadRequest(); }
+
+            var item = await _db.GetById(id.Value);
             if (item == null) { return NotFound(); }
+
             return View(item);
         }
 
@@ -33,7 +36,10 @@ namespace Booking.Controllers
         [HttpPost]
         public virtual async Task<ActionResult> Create(T input)
         {
-            if (!ModelState.IsValid) { return View("CreateOrEdit", input); }
+            if (!ModelState.IsValid)
+            {
+                return View("CreateOrEdit", input);
+            }
 
             await _db.Add(input);
             return RedirectToAction(nameof(Index));

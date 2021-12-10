@@ -24,7 +24,7 @@ namespace Booking.Controllers
         [Route("/ExceptionHandler")]
         public ActionResult ExceptionHandler()
         {
-            ViewData["Message"] = $"Exception occurred with RequestId: {HttpContext.TraceIdentifier}";
+            ViewData["Message"] = $"Exception occurred with RequestId: {HttpContext?.TraceIdentifier}";
             return View("Error");
         }
     }
