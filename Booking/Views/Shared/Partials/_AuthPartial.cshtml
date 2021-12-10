@@ -1,0 +1,32 @@
+﻿<ul class="navbar-nav ml-auto">
+    @if (User.Identity.IsAuthenticated)
+    {
+        @if (User.IsInRole("admin"))
+        {
+            <li class="nav-item active">
+                <a class="nav-link" asp-area="admin" asp-controller="Home" asp-action="Index">AdminArea</a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item active">
+                <a class="nav-link" asp-area="HosterArea" asp-controller="Home" asp-action="Index">HosterArea</a>
+            </li>
+        }
+        <li class="nav-item active">
+            <a class="nav-link" href="/Account/Logout">
+                @char.ToUpper(User.Identity.Name[0])@User.Identity.Name.Substring(1)
+                (Logout)
+            </a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item active @Html.IsSelected(actions: "Login", controllers: "Account")">
+            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+        </li>
+        <li class="nav-item active @Html.IsSelected(actions: "Register", controllers: "Account")">
+            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+        </li>
+    }
+</ul>

@@ -2,12 +2,14 @@
 using Booking.Controllers;
 using Booking.DAL.Enums;
 using Booking.DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Booking.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "admin")]
     public class ApartmentController : BaseController<Apartment>
     {
         private readonly IRepositories _db;

@@ -28,20 +28,7 @@
                             <a class="nav-link" asp-controller="Location" asp-action="Index">Locations</a>
                         </li>
                     </ul>
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" asp-area="admin" asp-controller="Home" asp-action="Index">AdminArea</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" asp-area="HosterArea" asp-controller="Home" asp-action="Index">HosterArea</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                        </li>
-                    </ul>
+                    <partial name="Partials/_AuthPartial" />
                 </div>
             </nav>
 

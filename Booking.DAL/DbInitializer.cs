@@ -1,21 +1,46 @@
 ﻿using Booking.DAL.Enums;
 using Booking.DAL.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Booking.DAL
 {
     public class DbInitializer
     {
-        public static void Initialize(AppDbContext context)
+        public static async Task InitializeAsync(IServiceProvider serviceProvider)
         {
+            var context = serviceProvider.GetRequiredService<AppDbContext>();
             var creator = context.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
             if (creator.Exists()) { return; }
+
             context.Database.Migrate();
+            UserManager<User> userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+            RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            var admin = new User
+            {
+                UserName = "admin",
+                Email = "admin@mail.com"
+            };
+
+            var user = new User
+            {
+                UserName = "user",
+                Email = "user@mail.com"
+            };
+
+            await roleManager.CreateAsync(new IdentityRole("admin"));
+            await roleManager.CreateAsync(new IdentityRole("user"));
+            await userManager.CreateAsync(admin, "Pa$$w0rd");
+            await userManager.AddToRoleAsync(admin, "admin");
+            await userManager.CreateAsync(user, "Pa$$w0rd");
 
             var locations = new List<Location>
             {
@@ -25,7 +50,7 @@ namespace Booking.DAL
                 new Location { Name="Cherkasy", State=LocationState.Inactive }
             };
             context.Locations.AddRange(locations);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
 
             var hosters = new List<Hoster>
@@ -37,7 +62,7 @@ namespace Booking.DAL
                 new Hoster { FirstName="Timmy", LastName="Nader", State=HosterState.Inactive}
             };
             context.Hosters.AddRange(hosters);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
 
             var features = new List<Feature>
@@ -48,7 +73,7 @@ namespace Booking.DAL
                 new Feature { Name="Heating", State=FeatureState.Active }
             };
             context.Features.AddRange(features);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
 
             var explorers = new List<Explorer>
@@ -58,7 +83,7 @@ namespace Booking.DAL
                 new Explorer{FirstName="Stephen", LastName="Sikes", Email="stephen@mail.com", Birthday=DateTime.Now.AddYears(-40), State=ExplorerState.Active}
             };
             context.Explorers.AddRange(explorers);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
 
             var apartments = new List<Apartment>
@@ -84,7 +109,7 @@ namespace Booking.DAL
             };
 
             context.Apartments.AddRange(apartments);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             foreach (Apartment item in context.Apartments)
             {
@@ -95,7 +120,7 @@ namespace Booking.DAL
                     .OrderBy(q => Guid.NewGuid()).First().Id,
                 });
             }
-            context.SaveChanges();
+            await context.SaveChangesAsync();
 
             var rents = new List<Rent>
             {
@@ -122,7 +147,7 @@ namespace Booking.DAL
             };
 
             context.Rents.AddRange(rents);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
         }
     }
 }

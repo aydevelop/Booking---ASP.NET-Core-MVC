@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Booking.DAL
 {
-    public class AppDbContext : IdentityDbContext
+    public class AppDbContext : IdentityDbContext<User>
     {
         public DbSet<Apartment> Apartments { get; set; }
         public DbSet<Hoster> Hosters { get; set; }

@@ -30,6 +30,7 @@ namespace Booking
 
             services.AddDInjection();
             services.AddLibrary();
+            services.AddAuth();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -49,7 +50,7 @@ namespace Booking
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();
-            app.UseAuthorization();
+            app.UseAuth();
 
             app.UseEndpoints(endpoints =>
             {

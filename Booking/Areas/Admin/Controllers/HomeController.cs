@@ -1,11 +1,13 @@
 ﻿using Booking.BLL.Contracts;
 using Booking.BLL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace Booking.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "admin")]
     public class HomeController : Controller
     {
         private readonly IRepositories _db;

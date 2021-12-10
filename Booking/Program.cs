@@ -14,17 +14,15 @@ namespace Booking
         {
             var host = CreateHostBuilder(args).Build();
             using var scope = host.Services.CreateScope();
-            var services = scope.ServiceProvider;
+            IServiceProvider serviceProvider = scope.ServiceProvider;
 
-            var logger = services.GetRequiredService<ILogger<Program>>();
-            var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+            var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+            var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
             loggerFactory.AddFile(Path.Combine($"{Directory.GetCurrentDirectory()}", "Log\\Log.txt"));
 
             try
             {
-                var serviceProvider = scope.ServiceProvider;
-                var context = serviceProvider.GetRequiredService<AppDbContext>();
-                DbInitializer.Initialize(context);
+                DbInitializer.InitializeAsync(serviceProvider).Wait();
             }
             catch (Exception ex)
             {
