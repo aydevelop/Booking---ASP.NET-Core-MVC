@@ -1,6 +1,7 @@
 ﻿using Booking.BLL.Contracts;
 using Booking.BLL.ViewModels;
 using Booking.BLL.ViewModels.Data;
+using Booking.BLL.ViewModels.HosterArea;
 using Booking.Controllers;
 using Booking.DAL;
 using Booking.DAL.Models;
@@ -25,13 +26,15 @@ namespace Booking.Areas.HosterArea.Controllers
 
         public override async Task<ActionResult> Index()
         {
-            var items = await _db.Apartments.GetApartmentsWithDependencies();
-            return View(items);
+            ApartmentIndexVM model = new ApartmentIndexVM();
+            model.apartments = await _db.Apartments.GetApartmentsWithDependencies();
+            model.rents = await _db.Rents.GetWithInclude(new[] { "Explorer", "Apartment" });
+            return View(model);
         }
 
         public async Task<ActionResult> Create()
         {
-            HosterApartmentCreateVM model = new HosterApartmentCreateVM();
+            ApartmentCreateVM model = new ApartmentCreateVM();
             model.apartment = new Apartment();
             model.Hosters = await _db.Hosters.GetAll();
             model.Locations = await _db.Locations.GetAll();
@@ -48,11 +51,11 @@ namespace Booking.Areas.HosterArea.Controllers
         }
 
         [HttpPost]
-        public virtual async Task<ActionResult> CreateItem(HosterApartmentCreateVM item)
+        public virtual async Task<ActionResult> CreateItem(ApartmentCreateVM item)
         {
             if (!ModelState.IsValid)
             {
-                HosterApartmentCreateVM model = new HosterApartmentCreateVM();
+                ApartmentCreateVM model = new ApartmentCreateVM();
                 model = item;
                 model.Hosters = await _db.Hosters.GetAll();
                 model.Locations = await _db.Locations.GetAll();
@@ -94,7 +97,7 @@ namespace Booking.Areas.HosterArea.Controllers
                 });
             }
 
-            HosterApartmentCreateVM model = new HosterApartmentCreateVM();
+            ApartmentCreateVM model = new ApartmentCreateVM();
             model.apartment = item;
             model.Locations = await _db.Locations.GetAll();
             model.Hosters = await _db.Hosters.GetAll();
@@ -103,7 +106,7 @@ namespace Booking.Areas.HosterArea.Controllers
         }
 
         [HttpPost]
-        public virtual async Task<ActionResult> EditItem(HosterApartmentCreateVM item)
+        public virtual async Task<ActionResult> EditItem(ApartmentCreateVM item)
         {
             var aprtCheck = await _db.Apartments.GetById(item.apartment.Id);
             if (aprtCheck == null) { return NotFound(); }
@@ -132,6 +135,21 @@ namespace Booking.Areas.HosterArea.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        public override async Task<ActionResult> Details(int? id)
+        {
+            if (id == null) { return BadRequest(); }
+            var item = await _db.Apartments.GetByFilerWithInclude(q => q.Id == id, new[] { "Hoster", "Location" });
+
+            var firstItem = item.FirstOrDefault();
+            if (firstItem == null) { return NotFound(); }
+
+            ApartmentDetailsVM model = new ApartmentDetailsVM();
+            model.apartment = firstItem;
+            model.rents = await _db.Rents.GetByFilerWithInclude(q => q.ApartmentId == id, new[] { "Explorer", "Apartment" });
+
+            return View(model);
         }
     }
 }

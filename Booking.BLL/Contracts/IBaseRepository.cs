@@ -8,7 +8,7 @@ namespace Booking.BLL.Contracts
 {
     public interface IRepository<T> where T : class
     {
-        Task<T> GetById(int id);
+        ValueTask<T> GetById(int id);
         Task<List<T>> GetAll();
         IQueryable<T> GetQueryable();
         Task<List<T>> GetByFiler(Expression<Func<T, bool>> predicate);
@@ -20,5 +20,6 @@ namespace Booking.BLL.Contracts
         Task<int> Count();
         Task<int> Count(Expression<Func<T, bool>> predicate);
         Task<List<T>> GetWithInclude(IEnumerable<string> tables);
+        Task<List<T>> GetByFilerWithInclude(Expression<Func<T, bool>> predicate, IEnumerable<string> tables);
     }
 }

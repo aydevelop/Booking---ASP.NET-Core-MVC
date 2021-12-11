@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace Booking.BLL.Validators
 {
-    public class HosterApartmentCreateValidator : AbstractValidator<HosterApartmentCreateVM>
+    public class HosterApartmentCreateValidator : AbstractValidator<ApartmentCreateVM>
     {
         private readonly AppDbContext _db;
-        private HosterApartmentCreateVM _model;
+        private ApartmentCreateVM _model;
 
         public HosterApartmentCreateValidator(AppDbContext db)
         {
@@ -19,7 +19,7 @@ namespace Booking.BLL.Validators
             RuleFor(p => p.apartment.Address).NotEmpty().MaximumLength(200);
         }
 
-        protected override bool PreValidate(ValidationContext<HosterApartmentCreateVM> context, FluentValidation.Results.ValidationResult result)
+        protected override bool PreValidate(ValidationContext<ApartmentCreateVM> context, FluentValidation.Results.ValidationResult result)
         {
             _model = context.InstanceToValidate;
             return base.PreValidate(context, result);

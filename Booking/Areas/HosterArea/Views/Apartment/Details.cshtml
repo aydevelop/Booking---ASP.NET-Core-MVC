@@ -1,4 +1,5 @@
-﻿@model Booking.DAL.Models.Apartment
+﻿@using Booking.BLL.ViewModels.HosterArea
+@model ApartmentDetailsVM
 
 @{
     ViewData["Title"] = "Details";
@@ -11,56 +12,106 @@
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
+            @Html.DisplayNameFor(model => model.apartment.Id)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Id)
+            @Html.DisplayFor(model => model.apartment.Id)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.apartment.Name)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.apartment.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.HosterId)
+            @Html.DisplayNameFor(model => model.apartment.Hoster)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.HosterId)
+            @Html.DisplayFor(model => model.apartment.Hoster.FullName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LocationId)
+            @Html.DisplayNameFor(model => model.apartment.Location)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LocationId)
+            @Html.DisplayFor(model => model.apartment.Location.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
+            @Html.DisplayNameFor(model => model.apartment.Address)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Address)
+            @Html.DisplayFor(model => model.apartment.Address)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AvgScore)
+            @Html.DisplayNameFor(model => model.apartment.AvgScore)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AvgScore)
+            @Html.DisplayFor(model => model.apartment.AvgScore)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MaxDurationInDays)
+            @Html.DisplayNameFor(model => model.apartment.MaxDurationInDays)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MaxDurationInDays)
+            @Html.DisplayFor(model => model.apartment.MaxDurationInDays)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.State)
+            @Html.DisplayNameFor(model => model.apartment.State)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.State)
+            @Html.DisplayFor(model => model.apartment.State)
         </dd>
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @*@Html.ActionLink("Edit", "Edit", new {  id = @model.apartment.Id  }) |*@
     <a asp-area="HosterArea" asp-action="Index">Back to List</a>
 </div>
+
+<div class="mt-5"><hr /></div>
+<h4 class="text-center mt-5 mb-4 font-weight-bold title-small">Rents of Apartment</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Explorer
+            </th>
+            <th>
+                Apartment
+            </th>
+            <th>
+                StartDate
+            </th>
+            <th>
+                EndDate
+            </th>
+            <th>
+                State
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Rent item in Model.rents)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Explorer.FullName)
+                </td>
+                <td>
+                    <a href="/HosterArea/Apartment/Details/@item.Id">
+                        @Html.DisplayFor(modelItem => item.Apartment.Name)
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.State)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

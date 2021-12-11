@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - Booking</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script defer src="https://friconix.com/cdn/friconix.js"></script>
 </head>
 <body>
     <main>
@@ -18,15 +19,18 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
-                        @* <li class="nav-item @Html.IsSelected(actions: "Index", controllers: "Apartment")">
-                            <a class="nav-link" asp-controller="Apartment" asp-action="Index">Apartments</a>
-                            </li>
-                            <li class="nav-item @Html.IsSelected(actions: "Index", controllers: "Hoster")">
-                            <a class="nav-link" asp-controller="Hoster" asp-action="Index">Hosters</a>
-                            </li>
-                            <li class="nav-item @Html.IsSelected(actions: "Index", controllers: "Locations")">
-                            <a class="nav-link" asp-controller="Location" asp-action="Index">Locations</a>
-                            </li>*@
+                        <li class="nav-item @Html.IsSelected(actions: "Index", controllers: "Hoster")">
+                            <a class="nav-link" asp-area="adminarea" asp-controller="Hoster" asp-action="Index">Hosters</a>
+                        </li>
+                        <li class="nav-item @Html.IsSelected(actions: "Index", controllers: "Explorer")">
+                            <a class="nav-link" asp-area="adminarea" asp-controller="Explorer" asp-action="Index">Explorers</a>
+                        </li>
+                        <li class="nav-item @Html.IsSelected(actions: "Index", controllers: "Feature")">
+                            <a class="nav-link" asp-area="adminarea" asp-controller="Feature" asp-action="Index">Features</a>
+                        </li>
+                        <li class="nav-item @Html.IsSelected(actions: "Index", controllers: "Location")">
+                            <a class="nav-link" asp-area="adminarea" asp-controller="Location" asp-action="Index">Locations</a>
+                        </li>
                     </ul>
                     <partial name="Partials/_AuthPartial" />
                 </div>
