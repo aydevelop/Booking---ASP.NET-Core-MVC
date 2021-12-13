@@ -9,6 +9,8 @@ namespace Booking.Areas.HosterArea.Controllers
         [Authorize]
         public IActionResult Index()
         {
+
+
             return Redirect("/HosterArea/Apartment");
         }
     }

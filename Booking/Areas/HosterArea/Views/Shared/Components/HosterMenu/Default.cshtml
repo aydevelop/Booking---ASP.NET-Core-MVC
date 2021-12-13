@@ -1,0 +1,29 @@
+﻿@using Booking.BLL.ViewModels.HosterArea
+@model HosterMenuVM
+
+
+<ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+        <span class="nav-link rents-title">MYRENTS:</span>
+    </li>
+    <li class="nav-item @Html.IsSelected(actions: "Requested", controllers: "Rent")">
+        <a class="nav-link" asp-area="hosterarea" asp-controller="Rent" asp-action="Requested">
+            Requested @Model.RequestedCount
+        </a>
+    </li>
+    <li class="nav-item @Html.IsSelected(actions: "Approved", controllers: "Rent")">
+        <a class="nav-link" asp-area="hosterarea" asp-controller="Rent" asp-action="Approved">
+            Approved @Model.ApprovedCount
+        </a>
+    </li>
+    <li class="nav-item @Html.IsSelected(actions: "Rejected", controllers: "Rent")">
+        <a class="nav-link" asp-area="hosterarea" asp-controller="Rent" asp-action="Rejected">
+            Rejected @Model.RejectedCount
+        </a>
+    </li>
+    <li class="nav-item @Html.IsSelected(actions: "Inactive", controllers: "Rent")">
+        <a class="nav-link" asp-area="hosterarea" asp-controller="Rent" asp-action="Inactive">
+            Inactive @Model.InactiveCount
+        </a>
+    </li>
+</ul>

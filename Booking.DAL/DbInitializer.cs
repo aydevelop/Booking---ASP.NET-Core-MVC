@@ -144,6 +144,16 @@ namespace Booking.DAL
                     ApartmentId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
                     StartDate=DateTime.Now.AddDays(1), EndDate=DateTime.Now.AddDays(2), State = RentState.Requested
                 },
+                new Rent {
+                    ExplorerId=context.Explorers.Where(q=>q.State==ExplorerState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
+                    ApartmentId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
+                    StartDate=DateTime.Now.AddDays(1), EndDate=DateTime.Now.AddDays(2), State = RentState.Rejected
+                },
+                new Rent {
+                    ExplorerId=context.Explorers.Where(q=>q.State==ExplorerState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
+                    ApartmentId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
+                    StartDate=DateTime.Now.AddDays(1), EndDate=DateTime.Now.AddDays(2), State = RentState.Inactive
+                },
             };
 
             context.Rents.AddRange(rents);

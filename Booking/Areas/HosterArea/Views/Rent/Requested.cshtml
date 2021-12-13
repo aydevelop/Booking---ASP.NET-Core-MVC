@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Booking.DAL.Models.Rent>
+
+@{
+    ViewData["Title"] = "Requested";
+}
+
+<h1>Requested</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Explorer)
+            </th>
+            <th>
+                Action
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Explorer.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Apartment.Address)
+                </td>
+                <td>
+                    <a href="/hosterarea/Rent/Approve/@item.Id">Approve</a>
+                    <span class="ml-2 mr-2">/</span>
+                    <a href="/hosterarea/Rent/Reject/@item.Id">Reject</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

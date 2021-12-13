@@ -76,9 +76,6 @@
                 Explorer
             </th>
             <th>
-                Apartment
-            </th>
-            <th>
                 StartDate
             </th>
             <th>
@@ -96,11 +93,6 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Explorer.FullName)
-                </td>
-                <td>
-                    <a href="/HosterArea/Apartment/Details/@item.Id">
-                        @Html.DisplayFor(modelItem => item.Apartment.Name)
-                    </a>
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StartDate)
