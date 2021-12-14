@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Booking.DAL.Models.Apartment>
+
+@{
+    ViewData["Title"] = "Apartments";
+}
+
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-4">
+            <div class="card shadow mb-5">
+                <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg>
+
+                <div class="card-body">
+                    <h4 class="card-text pb-3 text-center">@item.Name</h4>
+                    <p class="card-text">@item.Location.Name - @item.Address</p>
+                    <p class="card-text">Hoster - @item.Hoster.FullName</p>
+
+                    <div class="a-props ml-4 mt-4 mb-4">
+                        @foreach (var prop in item.Features)
+                        {
+                            <i class="fa fa-check"></i>
+                            <span>@prop.Feature.Name</span>
+                        }
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn btn-success">Rent</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -2,8 +2,6 @@
 using Booking.DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -17,8 +15,9 @@ namespace Booking.DAL
         public static async Task InitializeAsync(IServiceProvider serviceProvider)
         {
             var context = serviceProvider.GetRequiredService<AppDbContext>();
-            var creator = context.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
-            if (creator.Exists()) { return; }
+            context.Database.EnsureDeleted();
+            //var creator = context.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
+            //if (creator.Exists()) { return; }
 
             context.Database.Migrate();
             UserManager<User> userManager = serviceProvider.GetRequiredService<UserManager<User>>();
@@ -26,21 +25,24 @@ namespace Booking.DAL
 
             var admin = new User
             {
-                UserName = "admin",
-                Email = "admin@mail.com"
+                UserName = "admin01",
+                Email = "admin01@mail.com"
             };
 
-            var user = new User
+            var hoster = new User
             {
-                UserName = "user",
-                Email = "user@mail.com"
+                UserName = "hoster01",
+                Email = "hoster01@mail.com"
             };
 
             await roleManager.CreateAsync(new IdentityRole("admin"));
-            await roleManager.CreateAsync(new IdentityRole("user"));
+            await roleManager.CreateAsync(new IdentityRole("hoster"));
+            await roleManager.CreateAsync(new IdentityRole("client"));
+
             await userManager.CreateAsync(admin, "Pa$$w0rd");
+            await userManager.CreateAsync(hoster, "Pa$$w0rd");
             await userManager.AddToRoleAsync(admin, "admin");
-            await userManager.CreateAsync(user, "Pa$$w0rd");
+            await userManager.AddToRoleAsync(admin, "hoster");
 
             var locations = new List<Location>
             {
@@ -102,6 +104,18 @@ namespace Booking.DAL
                 },
                 new Apartment {
                     Name="Opera Passage", Address="Baseina Street 77a",
+                    AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
+                    Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
+                    Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First()
+                },
+                new Apartment {
+                    Name="Opera Passage2", Address="Baseina Street 7a",
+                    AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
+                    Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
+                    Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First()
+                },
+                new Apartment {
+                    Name="Opera Passage3", Address="Baseina Street 277a",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
                     Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First()

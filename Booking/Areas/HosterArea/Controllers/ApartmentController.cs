@@ -3,7 +3,6 @@ using Booking.BLL.ViewModels;
 using Booking.BLL.ViewModels.Data;
 using Booking.BLL.ViewModels.HosterArea;
 using Booking.Controllers;
-using Booking.DAL;
 using Booking.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -16,12 +15,10 @@ namespace Booking.Areas.HosterArea.Controllers
     public class ApartmentController : BaseController<Apartment>
     {
         private readonly IRepositories _db;
-        private readonly AppDbContext _context;
 
-        public ApartmentController(IRepositories db, AppDbContext context) : base(db.Apartments)
+        public ApartmentController(IRepositories db) : base(db.Apartments)
         {
             _db = db;
-            _context = context;
         }
 
         public override async Task<ActionResult> Index()
@@ -147,7 +144,9 @@ namespace Booking.Areas.HosterArea.Controllers
 
             ApartmentDetailsVM model = new ApartmentDetailsVM();
             model.apartment = firstItem;
-            model.rents = await _db.Rents.GetByFilerWithInclude(q => q.ApartmentId == id, new[] { "Explorer", "Apartment" });
+            List<Rent> rents = await _db.Rents
+                .GetByFilerWithInclude(q => q.ApartmentId == id, new[] { "Explorer", "Apartment" });
+            model.rents = rents.Take(10).ToList();
 
             return View(model);
         }

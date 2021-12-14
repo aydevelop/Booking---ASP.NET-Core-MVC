@@ -3,20 +3,23 @@
     {
         @if (User.IsInRole("admin"))
         {
-            <li class="nav-item active">
-                <a class="nav-link" asp-area="adminarea" asp-controller="Home" asp-action="Index">AdminArea</a>
+            <li class="nav-item active @Html.IsSelectedArea(areas:"AdminArea", actions: "Index", controllers: "Home")">
+                <a class="nav-link" asp-area="AdminArea" asp-controller="Home" asp-action="Index">
+                    @char.ToUpper(User.Identity.Name[0])@User.Identity.Name.Substring(1) - AdminArea
+                </a>
             </li>
         }
         else
         {
-            <li class="nav-item active">
-                <a class="nav-link" asp-area="HosterArea" asp-controller="Home" asp-action="Index">HosterArea</a>
+            <li class="nav-item active @Html.IsSelectedArea(areas:"HosterArea", actions: "Index", controllers: "Apartment")">
+                <a class="nav-link" asp-area="HosterArea" asp-controller="Apartment" asp-action="Index">
+                    @char.ToUpper(User.Identity.Name[0])@User.Identity.Name.Substring(1) - HosterArea
+                </a>
             </li>
         }
         <li class="nav-item active">
             <a class="nav-link" href="/Account/Logout">
-                @char.ToUpper(User.Identity.Name[0])@User.Identity.Name.Substring(1)
-                (Logout)
+                Logout
             </a>
         </li>
     }

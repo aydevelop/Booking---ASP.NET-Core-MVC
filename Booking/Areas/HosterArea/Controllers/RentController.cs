@@ -39,25 +39,37 @@ namespace Booking.Areas.HosterArea.Controllers
 
         public async Task<ActionResult> Requested()
         {
-            var rents = await _db.Rents.GetByFiler(q => q.State == RentState.Requested);
+            var rents = await _db.Rents
+                .GetByFilerWithInclude(q => q.State == RentState.Requested,
+                new[] { "Explorer", "Apartment" });
+
             return View(rents);
         }
 
         public async Task<ActionResult> Approved()
         {
-            var rents = await _db.Rents.GetByFiler(q => q.State == RentState.Approved);
+            var rents = await _db.Rents
+               .GetByFilerWithInclude(q => q.State == RentState.Approved,
+               new[] { "Explorer", "Apartment" });
+
             return View(rents);
         }
 
         public async Task<ActionResult> Rejected()
         {
-            var rents = await _db.Rents.GetByFiler(q => q.State == RentState.Rejected);
+            var rents = await _db.Rents
+               .GetByFilerWithInclude(q => q.State == RentState.Rejected,
+               new[] { "Explorer", "Apartment" });
+
             return View(rents);
         }
 
         public async Task<ActionResult> Inactive()
         {
-            var rents = await _db.Rents.GetByFiler(q => q.State == RentState.Inactive);
+            var rents = await _db.Rents
+               .GetByFilerWithInclude(q => q.State == RentState.Inactive,
+               new[] { "Explorer", "Apartment" });
+
             return View(rents);
         }
     }

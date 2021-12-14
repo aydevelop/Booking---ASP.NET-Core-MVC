@@ -1,22 +1,25 @@
 
-
 body {
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
 
-    body > main {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-    }
+.container {
+    min-width: 1200px !important;
+}
 
-    body > footer {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 0;
-    }
+body > main {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+body > footer {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 0;
+}
 
 .content {
     margin-top: 70px;
@@ -113,4 +116,9 @@ body {
 .rents-title {
     font-style: italic;
     color: black !important;
+}
+
+
+.rating {
+    color: #FF9529;
 }
