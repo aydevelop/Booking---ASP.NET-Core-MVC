@@ -21,10 +21,9 @@ namespace Booking.DAL.Migrations
 
             modelBuilder.Entity("Booking.DAL.Models.Apartment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .IsRequired()
@@ -34,11 +33,11 @@ namespace Booking.DAL.Migrations
                     b.Property<double>("AvgScore")
                         .HasColumnType("float");
 
-                    b.Property<int>("HosterId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("HosterId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("LocationId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("LocationId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("MaxDurationInDays")
                         .HasColumnType("int");
@@ -65,16 +64,15 @@ namespace Booking.DAL.Migrations
 
             modelBuilder.Entity("Booking.DAL.Models.ApartmentFeature", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ApartmentId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ApartmentId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("FeatureId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("FeatureId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -87,10 +85,9 @@ namespace Booking.DAL.Migrations
 
             modelBuilder.Entity("Booking.DAL.Models.Explorer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Birthday")
                         .HasColumnType("datetime2");
@@ -117,10 +114,9 @@ namespace Booking.DAL.Migrations
 
             modelBuilder.Entity("Booking.DAL.Models.Feature", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -135,10 +131,9 @@ namespace Booking.DAL.Migrations
 
             modelBuilder.Entity("Booking.DAL.Models.Hoster", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -160,10 +155,9 @@ namespace Booking.DAL.Migrations
 
             modelBuilder.Entity("Booking.DAL.Models.Location", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -183,19 +177,18 @@ namespace Booking.DAL.Migrations
 
             modelBuilder.Entity("Booking.DAL.Models.Rent", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ApartmentId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ApartmentId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ExplorerId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ExplorerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");

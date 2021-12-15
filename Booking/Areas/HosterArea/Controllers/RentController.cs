@@ -1,6 +1,7 @@
 ﻿using Booking.BLL.Contracts;
 using Booking.DAL.Enums;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Booking.Areas.HosterArea.Controllers
@@ -15,7 +16,7 @@ namespace Booking.Areas.HosterArea.Controllers
             _db = db;
         }
 
-        public async Task<ActionResult> Approve(int id)
+        public async Task<ActionResult> Approve(Guid id)
         {
             var rent = await _db.Rents.GetById(id);
             if (rent == null) { return NotFound(); }
@@ -26,7 +27,7 @@ namespace Booking.Areas.HosterArea.Controllers
             return RedirectToAction(nameof(Approved));
         }
 
-        public async Task<ActionResult> Reject(int id)
+        public async Task<ActionResult> Reject(Guid id)
         {
             var rent = await _db.Rents.GetById(id);
             if (rent == null) { return NotFound(); }

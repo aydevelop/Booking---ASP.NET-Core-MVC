@@ -35,14 +35,24 @@ namespace Booking.DAL
                 Email = "hoster01@mail.com"
             };
 
+            var explorer = new User
+            {
+                UserName = "explorer01",
+                Email = "explorer01@mail.com"
+            };
+
             await roleManager.CreateAsync(new IdentityRole("admin"));
             await roleManager.CreateAsync(new IdentityRole("hoster"));
-            await roleManager.CreateAsync(new IdentityRole("client"));
+            await roleManager.CreateAsync(new IdentityRole("explorer"));
 
             await userManager.CreateAsync(admin, "Pa$$w0rd");
             await userManager.CreateAsync(hoster, "Pa$$w0rd");
+            await userManager.CreateAsync(explorer, "Pa$$w0rd");
+
             await userManager.AddToRoleAsync(admin, "admin");
-            await userManager.AddToRoleAsync(admin, "hoster");
+            await userManager.AddToRoleAsync(hoster, "hoster");
+            await userManager.AddToRoleAsync(explorer, "explorer");
+
 
             var locations = new List<Location>
             {

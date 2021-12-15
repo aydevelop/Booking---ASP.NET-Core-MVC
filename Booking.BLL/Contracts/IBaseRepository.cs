@@ -8,7 +8,7 @@ namespace Booking.BLL.Contracts
 {
     public interface IRepository<T> where T : class
     {
-        ValueTask<T> GetById(int id);
+        ValueTask<T> GetById(Guid id);
         Task<List<T>> GetAll();
         IQueryable<T> GetQueryable();
         Task<List<T>> GetByFiler(Expression<Func<T, bool>> predicate);

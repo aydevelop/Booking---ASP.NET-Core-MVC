@@ -25,7 +25,7 @@ namespace Booking.BLL.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public ValueTask<T> GetById(int id)
+        public ValueTask<T> GetById(Guid id)
         {
             return _db.Set<T>().FindAsync(id);
         }

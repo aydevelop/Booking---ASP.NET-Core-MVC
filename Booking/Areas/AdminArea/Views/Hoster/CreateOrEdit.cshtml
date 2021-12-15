@@ -1,7 +1,7 @@
 ﻿@model Booking.DAL.Models.Hoster
 
 @{
-    string action = Model.Id == 0 ? "Create" : "Edit";
+    string action = Model.Id == Guid.Empty ? "Create" : "Edit";
     ViewData["Title"] = action;
 }
 
@@ -13,7 +13,7 @@
     <div class="col-md-4">
         <form asp-area="adminarea" asp-action="@action">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" class="form-control" />
+            <input type="hidden" asp-for="Id" />
 
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>

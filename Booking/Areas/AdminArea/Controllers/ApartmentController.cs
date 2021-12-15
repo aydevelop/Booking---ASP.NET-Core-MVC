@@ -2,6 +2,7 @@
 using Booking.DAL.Enums;
 using Booking.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Booking.Areas.Admin.Controllers
@@ -20,7 +21,7 @@ namespace Booking.Areas.Admin.Controllers
             return View(items);
         }
 
-        public override async Task<ActionResult> CreateOrEdit(int id)
+        public override async Task<ActionResult> CreateOrEdit(Guid id)
         {
             await LoadHostersLocations();
             return await base.CreateOrEdit(id);

@@ -122,3 +122,8 @@ body > footer {
 .rating {
     color: #FF9529;
 }
+
+.login-info {
+    font-size: 12.3px;
+    font-weight: bold;
+}

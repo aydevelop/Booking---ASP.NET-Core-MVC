@@ -1,4 +1,5 @@
 ﻿using Booking.DAL.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -14,11 +15,11 @@ namespace Booking.DAL.Models
         public ApartmentState State { get; set; }
 
         [Display(Name = "Hoster")]
-        public int HosterId { get; set; }
+        public Guid HosterId { get; set; }
         public virtual Hoster Hoster { get; set; }
 
         [Display(Name = "Location")]
-        public int LocationId { get; set; }
+        public Guid LocationId { get; set; }
         public virtual Location Location { get; set; }
 
         public virtual List<ApartmentFeature> Features { get; set; } = new List<ApartmentFeature>();

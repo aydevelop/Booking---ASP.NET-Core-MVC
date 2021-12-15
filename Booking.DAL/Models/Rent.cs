@@ -9,10 +9,10 @@ namespace Booking.DAL.Models
         public DateTime EndDate { get; set; }
         public RentState State { get; set; }
 
-        public int ExplorerId { get; set; }
+        public Guid ExplorerId { get; set; }
         public virtual Explorer Explorer { get; set; }
 
-        public int ApartmentId { get; set; }
+        public Guid ApartmentId { get; set; }
         public virtual Apartment Apartment { get; set; }
     }
 }

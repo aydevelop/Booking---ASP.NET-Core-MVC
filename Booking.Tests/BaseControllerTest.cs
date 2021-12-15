@@ -4,6 +4,7 @@ using Booking.DAL.Enums;
 using Booking.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,10 +18,10 @@ namespace Booking.Tests
         {
             List<Location> _locations = new List<Location>
             {
-                new Location{Id = 1, Name = "L1", State = LocationState.Active},
-                new Location{Id = 2, Name = "L2", State = LocationState.Active},
-                new Location{Id = 3, Name = "L3", State = LocationState.Active},
-                new Location{Id = 4, Name = "L4", State = LocationState.Active}
+                new Location{Id = Guid.Parse("b1754c14-d296-4b0f-a09a-030017f4461f"), Name = "L1", State = LocationState.Active},
+                new Location{Id = Guid.Parse("b1754c14-d296-4b0f-a09a-030017f4462f"), Name = "L2", State = LocationState.Active},
+                new Location{Id = Guid.Parse("b1754c14-d296-4b0f-a09a-030017f4463f"), Name = "L3", State = LocationState.Active},
+                new Location{Id = Guid.Parse("b1754c14-d296-4b0f-a09a-030017f4464f"), Name = "L4", State = LocationState.Active}
             };
 
             return Task.FromResult(_locations);
@@ -95,9 +96,9 @@ namespace Booking.Tests
         public async void GetLocationWithId0ReturnsNotFoundAsync()
         {
             // Arrange
-            int testId = 0;
+            Guid testId = Guid.Parse("b1754c14-d296-4b0f-a09a-030017f4461f");
             var mock = new Mock<ILocationRepository>();
-            mock.Setup(repo => repo.GetById(It.IsAny<int>())).Returns(async () => await Task.FromResult(null as Location));
+            mock.Setup(repo => repo.GetById(It.IsAny<Guid>())).Returns(async () => await Task.FromResult(null as Location));
             var controller = new BaseController<Location>(mock.Object);
 
             // Act
@@ -111,11 +112,11 @@ namespace Booking.Tests
         public async void GetLocationReturnsViewResultWithLocationAsync()
         {
             // Arrange
-            int testId = 1;
+            Guid testId = Guid.Parse("b1754c14-d296-4b0f-a09a-030017f4461f");
             Location location = (await GetData()).FirstOrDefault(p => p.Id == testId);
 
             var mock = new Mock<ILocationRepository>();
-            mock.Setup(repo => repo.GetById(It.IsAny<int>())).Returns(async () => await Task.FromResult(location));
+            mock.Setup(repo => repo.GetById(It.IsAny<Guid>())).Returns(async () => await Task.FromResult(location));
             var controller = new BaseController<Location>(mock.Object);
 
             // Act

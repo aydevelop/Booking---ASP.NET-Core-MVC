@@ -9,11 +9,19 @@
                 </a>
             </li>
         }
-        else
+        else if (User.IsInRole("hoster"))
         {
             <li class="nav-item active @Html.IsSelectedArea(areas:"HosterArea", actions: "Index", controllers: "Apartment")">
                 <a class="nav-link" asp-area="HosterArea" asp-controller="Apartment" asp-action="Index">
                     @char.ToUpper(User.Identity.Name[0])@User.Identity.Name.Substring(1) - HosterArea
+                </a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item active @Html.IsSelectedArea(areas:"ExplorerArea", actions: "Index", controllers: "Rent")">
+                <a class="nav-link" asp-area="ExplorerArea" asp-controller="Rent" asp-action="Index">
+                    @char.ToUpper(User.Identity.Name[0])@User.Identity.Name.Substring(1) - ExplorerArea
                 </a>
             </li>
         }

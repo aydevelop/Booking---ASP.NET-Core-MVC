@@ -1,7 +1,9 @@
-﻿namespace Booking.DAL.Models
+﻿using System;
+
+namespace Booking.DAL.Models
 {
     public class BaseModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

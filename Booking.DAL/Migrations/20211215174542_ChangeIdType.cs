@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Booking.DAL.Migrations
 {
-    public partial class Init : Migration
+    public partial class ChangeIdType : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,6 +26,7 @@ namespace Booking.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    YearOfBirth = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -47,11 +48,40 @@ namespace Booking.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Explorers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Birthday = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    State = table.Column<int>(type: "int", nullable: false),
+                    DateFromState = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Explorers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Features",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    State = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Features", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Hosters",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     State = table.Column<int>(type: "int", nullable: false)
@@ -65,8 +95,7 @@ namespace Booking.DAL.Migrations
                 name: "Locations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     State = table.Column<int>(type: "int", nullable: false)
                 },
@@ -185,15 +214,14 @@ namespace Booking.DAL.Migrations
                 name: "Apartments",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Address = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     AvgScore = table.Column<double>(type: "float", nullable: false),
                     MaxDurationInDays = table.Column<int>(type: "int", nullable: false),
                     State = table.Column<int>(type: "int", nullable: false),
-                    HosterId = table.Column<int>(type: "int", nullable: false),
-                    LocationId = table.Column<int>(type: "int", nullable: false)
+                    HosterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -211,6 +239,69 @@ namespace Booking.DAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "ApartmentFeature",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ApartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FeatureId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ApartmentFeature", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ApartmentFeature_Apartments_ApartmentId",
+                        column: x => x.ApartmentId,
+                        principalTable: "Apartments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ApartmentFeature_Features_FeatureId",
+                        column: x => x.FeatureId,
+                        principalTable: "Features",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Rents",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    State = table.Column<int>(type: "int", nullable: false),
+                    ExplorerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ApartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rents", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Rents_Apartments_ApartmentId",
+                        column: x => x.ApartmentId,
+                        principalTable: "Apartments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Rents_Explorers_ExplorerId",
+                        column: x => x.ExplorerId,
+                        principalTable: "Explorers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApartmentFeature_ApartmentId",
+                table: "ApartmentFeature",
+                column: "ApartmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApartmentFeature_FeatureId",
+                table: "ApartmentFeature",
+                column: "FeatureId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Apartments_HosterId",
@@ -272,12 +363,22 @@ namespace Booking.DAL.Migrations
                 table: "Locations",
                 column: "Name",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rents_ApartmentId",
+                table: "Rents",
+                column: "ApartmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Rents_ExplorerId",
+                table: "Rents",
+                column: "ExplorerId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Apartments");
+                name: "ApartmentFeature");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -295,16 +396,28 @@ namespace Booking.DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Hosters");
+                name: "Rents");
 
             migrationBuilder.DropTable(
-                name: "Locations");
+                name: "Features");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Apartments");
+
+            migrationBuilder.DropTable(
+                name: "Explorers");
+
+            migrationBuilder.DropTable(
+                name: "Hosters");
+
+            migrationBuilder.DropTable(
+                name: "Locations");
         }
     }
 }

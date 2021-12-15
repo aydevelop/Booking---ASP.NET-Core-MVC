@@ -1,6 +1,7 @@
 ﻿using Booking.BLL.Contracts;
 using Booking.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Booking.Controllers
@@ -17,7 +18,7 @@ namespace Booking.Controllers
             return View(items);
         }
 
-        public virtual async Task<ActionResult> Details(int? id)
+        public virtual async Task<ActionResult> Details(Guid? id)
         {
             if (id == null) { return BadRequest(); }
 
@@ -27,7 +28,7 @@ namespace Booking.Controllers
             return View(item);
         }
 
-        public virtual async Task<ActionResult> CreateOrEdit(int id)
+        public virtual async Task<ActionResult> CreateOrEdit(Guid id)
         {
             var item = await _db.GetById(id);
             return View(item != null ? item : new T());
@@ -57,7 +58,7 @@ namespace Booking.Controllers
         }
 
 
-        public virtual async Task<ActionResult> Delete(int id)
+        public virtual async Task<ActionResult> Delete(Guid id)
         {
             var item = await _db.GetById(id);
             if (item == null) { return NotFound(); }
@@ -66,7 +67,7 @@ namespace Booking.Controllers
         }
 
         [HttpPost]
-        public virtual async Task<ActionResult> DeleteItem(int id)
+        public virtual async Task<ActionResult> DeleteItem(Guid id)
         {
             T item = await _db.GetById(id);
             if (item == null) { return NotFound(); }

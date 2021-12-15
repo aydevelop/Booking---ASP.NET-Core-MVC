@@ -28,7 +28,7 @@ namespace Booking.BLL.Validators
         private bool IsNotDuplicate(string name)
         {
             var query = _db.Apartments.AsQueryable();
-            if (_model.apartment?.Id > 0)
+            if (_model.apartment?.Id != null)
             {
                 query = query.Where(q => q.Id != _model.apartment.Id);
             }

@@ -5,6 +5,7 @@ using Booking.BLL.ViewModels.HosterArea;
 using Booking.Controllers;
 using Booking.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -75,7 +76,7 @@ namespace Booking.Areas.HosterArea.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<ActionResult> Edit(int id)
+        public async Task<ActionResult> Edit(Guid id)
         {
             var item = await _db.Apartments.GetById(id);
             if (item == null) { return NotFound(); }
@@ -134,7 +135,7 @@ namespace Booking.Areas.HosterArea.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public override async Task<ActionResult> Details(int? id)
+        public override async Task<ActionResult> Details(Guid? id)
         {
             if (id == null) { return BadRequest(); }
             var item = await _db.Apartments.GetByFilerWithInclude(q => q.Id == id, new[] { "Hoster", "Location" });

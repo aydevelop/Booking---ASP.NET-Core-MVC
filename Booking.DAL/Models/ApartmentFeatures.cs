@@ -1,11 +1,13 @@
-﻿namespace Booking.DAL.Models
+﻿using System;
+
+namespace Booking.DAL.Models
 {
     public class ApartmentFeature : BaseModel
     {
-        public int ApartmentId { get; set; }
+        public Guid ApartmentId { get; set; }
         public virtual Apartment Apartment { get; set; }
 
-        public int FeatureId { get; set; }
+        public Guid FeatureId { get; set; }
         public virtual Feature Feature { get; set; }
     }
 }
