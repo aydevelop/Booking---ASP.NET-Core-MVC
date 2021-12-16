@@ -1,7 +1,7 @@
 ﻿@model Booking.DAL.Models.Explorer
 
 @{
-    string action = Model.Id == Guid.Empty ? "Create" : "Edit";
+    string action = Model.Id == String.Empty ? "Create" : "Edit";
     ViewData["Title"] = action;
 }
 

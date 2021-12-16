@@ -2,6 +2,6 @@
 {
     public enum RentState
     {
-        Requested, Inactive, Approved, Rejected
+        Requested, Inactive, Approved, Rejected, Completed
     }
 }

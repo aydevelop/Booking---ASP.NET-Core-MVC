@@ -1,11 +1,12 @@
 ﻿using Booking.DAL.Configurations;
 using Booking.DAL.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Booking.DAL
 {
-    public class AppDbContext : IdentityDbContext<User>
+    public class AppDbContext : IdentityDbContext<IdentityUser>
     {
         public DbSet<Apartment> Apartments { get; set; }
         public DbSet<Hoster> Hosters { get; set; }

@@ -2,10 +2,10 @@
 using Booking.BLL.ViewModels.ExplorerArea;
 using Booking.DAL.Enums;
 using Booking.DAL.Models;
+using Booking.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Booking.Areas.ExplorerArea.Controllers
@@ -21,12 +21,28 @@ namespace Booking.Areas.ExplorerArea.Controllers
             _db = db;
         }
 
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(RentIndexVM input)
         {
-            Guid userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var rents = await _db.Rents.GetByFiler(q => q.ExplorerId == userId);
+            var rents = await _db.Rents.GetByFilerWithInclude(
+                q => q.ExplorerId == User.GetUserId(),
+                new string[] { "Apartment" }
+            );
 
-            return View(rents);
+            RentIndexVM model = new RentIndexVM();
+            model.rents = rents;
+            model.rentId = input.rentId;
+
+            if (input.rentId != null)
+            {
+                model.rent = await _db.Rents.GetById(input.rentId.Value);
+                if (input.deactivate != null)
+                {
+                    model.rent.State = RentState.Inactive;
+                    await _db.Rents.Update(model.rent);
+                }
+            }
+
+            return View(model);
         }
 
         public async Task<ActionResult> Create([FromQuery] Guid id)
@@ -47,19 +63,15 @@ namespace Booking.Areas.ExplorerArea.Controllers
 
         public async Task<ActionResult> CreateItem(RentCreateVM model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View("Create", model);
-            }
+            if (!ModelState.IsValid) { return View("Create", model); }
 
-            Guid userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             Rent rent = new Rent();
             rent.ApartmentId = model.ApartmentId;
-            rent.ExplorerId = userId;
+            rent.ExplorerId = User.GetUserId();
             rent.StartDate = model.StartDate;
             rent.EndDate = model.EndDate;
             rent.State = RentState.Requested;
-            //await _db.Rents.Add(rent);
+            await _db.Rents.Add(rent);
 
             return RedirectToAction(nameof(Index));
         }

@@ -1,6 +1,5 @@
 ﻿using Booking.BLL.Contracts;
 using Booking.DAL;
-using Booking.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Booking.BLL.Repositories
 {
-    public class BaseRepository<T> : IRepository<T> where T : BaseModel
+    public class BaseRepository<T> : IRepository<T> where T : class
     {
         private readonly AppDbContext _db;
 

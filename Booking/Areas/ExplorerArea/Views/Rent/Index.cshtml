@@ -1,5 +1,4 @@
-﻿@model IEnumerable<Booking.DAL.Models.Rent>
-
+﻿@model RentIndexVM
 
 @{
     ViewData["Title"] = "Rents";
@@ -7,30 +6,76 @@
 
 <h3 class="text-center mt-5 mb-4 font-weight-bold title-small">My Rents</h3>
 
+
+@if (Model.rent != null)
+{
+    <div class="rent-box-info">
+        <i class="fa fa-home"></i>
+        @{
+            var days = (Model.rent.EndDate - Model.rent.StartDate).Days;
+        }
+
+        @if (Model.rent.State == RentState.Requested)
+        {
+            <span>Waiting for rent confirmation</span>
+        }
+        else if (Model.rent.State == RentState.Rejected)
+        {
+            <span>Hoster reject request rent</span>
+        }
+        else if (Model.rent.State == RentState.Approved)
+        {
+            <span>Request confirmed.</span>
+            <span>
+                Start after @(days) days.
+            </span>
+            if (days >= 7)
+            {
+                <span><a asp-action="Index" asp-route-deactivate="true" asp-route-rentId="@Model.rentId"><b>Deactivate</b></a></span>
+            }
+            else if (days < 7)
+            {
+                <span>You cannot deactivate the request</span>
+            }
+        }
+        else if (Model.rent.State == RentState.Inactive)
+        {
+            <span>Rent is not active</span>
+        }
+    </div>
+}
+
 <table class="table">
     <thead>
+        @{
+            var rent = Model.rents.FirstOrDefault();
+        }
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.StartDate)
+                @Html.DisplayNameFor(model => rent.StartDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.EndDate)
+                @Html.DisplayNameFor(model => rent.EndDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.State)
+                @Html.DisplayNameFor(model => rent.State)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Explorer)
+                @Html.DisplayNameFor(model => rent.Apartment)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Apartment)
-            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.rents)
         {
-            <tr>
+            string selectRow = "";
+            @if (item.Id == Model.rentId)
+            {
+                selectRow = "bg-info";
+            }
+
+            <tr class="@selectRow">
                 <td>
                     @Html.DisplayFor(modelItem => item.StartDate)
                 </td>
@@ -41,10 +86,10 @@
                     @Html.DisplayFor(modelItem => item.State)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Explorer.Id)
+                    @Html.DisplayFor(modelItem => item.Apartment.Address)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Apartment.Address)
+                    <a asp-action="Index" asp-route-rentId="@item.Id"><b>Select</b></a>
                 </td>
             </tr>
         }

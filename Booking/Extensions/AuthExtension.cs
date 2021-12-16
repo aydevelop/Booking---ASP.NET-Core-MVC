@@ -1,5 +1,4 @@
 ﻿using Booking.DAL;
-using Booking.DAL.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -19,7 +18,7 @@ namespace Booking.Extensions
               });
 
             services
-               .AddIdentity<User, IdentityRole>()
+               .AddIdentity<IdentityUser, IdentityRole>()
                .AddEntityFrameworkStores<AppDbContext>();
 
             return services;

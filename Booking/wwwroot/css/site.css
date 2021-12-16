@@ -127,3 +127,17 @@ body > footer {
     font-size: 12.3px;
     font-weight: bold;
 }
+
+.rent-box-info {
+    border-bottom: 3px solid #3498db !important;
+    padding: 30px;
+    font-size: 19px;
+}
+
+    .rent-box-info i {
+        margin-right: 15px;
+    }
+
+    .rent-box-info span {
+        margin-left: 5px;
+    }

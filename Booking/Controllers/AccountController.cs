@@ -1,5 +1,4 @@
 ﻿using Booking.BLL.ViewModels;
-using Booking.DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -8,10 +7,10 @@ namespace Booking.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -28,7 +27,7 @@ namespace Booking.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
-                var result = await _signInManager.PasswordSignInAsync(user ?? new User(), model.Password, true, false);
+                var result = await _signInManager.PasswordSignInAsync(user ?? new IdentityUser(), model.Password, false, false);
 
                 if (result.Succeeded)
                 {
@@ -51,7 +50,7 @@ namespace Booking.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User
+                var user = new IdentityUser
                 {
                     UserName = viewModel.Email.Split('@')[0],
                     Email = viewModel.Email,

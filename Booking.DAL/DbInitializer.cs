@@ -12,30 +12,32 @@ namespace Booking.DAL
 {
     public class DbInitializer
     {
+        static AppDbContext context;
+
         public static async Task InitializeAsync(IServiceProvider serviceProvider)
         {
-            var context = serviceProvider.GetRequiredService<AppDbContext>();
+            context = serviceProvider.GetRequiredService<AppDbContext>();
             context.Database.EnsureDeleted();
             //var creator = context.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
             //if (creator.Exists()) { return; }
 
             context.Database.Migrate();
-            UserManager<User> userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+            UserManager<IdentityUser> userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
             RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            var admin = new User
+            var admin = new IdentityUser
             {
                 UserName = "admin01",
                 Email = "admin01@mail.com"
             };
 
-            var hoster = new User
+            var hoster = new Hoster
             {
                 UserName = "hoster01",
                 Email = "hoster01@mail.com"
             };
 
-            var explorer = new User
+            var explorer = new Explorer
             {
                 UserName = "explorer01",
                 Email = "explorer01@mail.com"
@@ -149,39 +151,57 @@ namespace Booking.DAL
             var rents = new List<Rent>
             {
                 new Rent {
-                    ExplorerId=context.Explorers.Where(q=>q.State==ExplorerState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
-                    ApartmentId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
-                    StartDate=DateTime.Now.AddDays(2), EndDate=DateTime.Now.AddDays(4), State = RentState.Approved
+                    ExplorerId = Guid.Parse(explorer.Id),
+                    ApartmentId = GetRandomApartment(),
+                    StartDate = DateTime.Now.AddDays(1), EndDate = DateTime.Now.AddDays(2), State = RentState.Inactive
                 },
                  new Rent {
-                    ExplorerId=context.Explorers.Where(q=>q.State==ExplorerState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
-                    ApartmentId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
-                    StartDate=DateTime.Now.AddDays(3), EndDate=DateTime.Now.AddDays(2), State = RentState.Requested
+                    ExplorerId = Guid.Parse(explorer.Id),
+                    ApartmentId = GetRandomApartment(),
+                    StartDate = DateTime.Now.AddDays(1), EndDate = DateTime.Now.AddDays(2), State = RentState.Requested
                 },
                 new Rent {
-                    ExplorerId=context.Explorers.Where(q=>q.State==ExplorerState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
-                    ApartmentId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
-                    StartDate=DateTime.Now.AddDays(4), EndDate=DateTime.Now.AddDays(1), State = RentState.Approved
+                    ExplorerId = Guid.Parse(explorer.Id),
+                    ApartmentId = GetRandomApartment(),
+                    StartDate = DateTime.Now.AddDays(1), EndDate = DateTime.Now.AddDays(2), State = RentState.Requested
                 },
                 new Rent {
-                    ExplorerId=context.Explorers.Where(q=>q.State==ExplorerState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
-                    ApartmentId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
-                    StartDate=DateTime.Now.AddDays(1), EndDate=DateTime.Now.AddDays(2), State = RentState.Requested
+                    ExplorerId = Guid.Parse(explorer.Id),
+                    ApartmentId = GetRandomApartment(),
+                    StartDate = DateTime.Now.AddDays(1), EndDate = DateTime.Now.AddDays(2), State = RentState.Approved
                 },
                 new Rent {
-                    ExplorerId=context.Explorers.Where(q=>q.State==ExplorerState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
-                    ApartmentId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
-                    StartDate=DateTime.Now.AddDays(1), EndDate=DateTime.Now.AddDays(2), State = RentState.Rejected
+                    ExplorerId = Guid.Parse(explorer.Id),
+                    ApartmentId = GetRandomApartment(),
+                    StartDate = DateTime.Now.AddDays(1), EndDate = DateTime.Now.AddDays(2), State = RentState.Requested
                 },
                 new Rent {
-                    ExplorerId=context.Explorers.Where(q=>q.State==ExplorerState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
-                    ApartmentId=context.Apartments.Where(q=>q.State==ApartmentState.Active).OrderBy(q=>Guid.NewGuid()).First().Id,
-                    StartDate=DateTime.Now.AddDays(1), EndDate=DateTime.Now.AddDays(2), State = RentState.Inactive
+                    ExplorerId = Guid.Parse(explorer.Id),
+                    ApartmentId = GetRandomApartment(),
+                    StartDate = DateTime.Now.AddDays(1), EndDate = DateTime.Now.AddDays(2), State = RentState.Inactive
                 },
             };
 
             context.Rents.AddRange(rents);
             await context.SaveChangesAsync();
+        }
+
+        static Guid GetRandomExplorer()
+        {
+            var id = context
+                .Explorers.Where(q => q.State == ExplorerState.Active)
+                .OrderBy(q => Guid.NewGuid()).First().Id;
+
+            return Guid.Parse(id);
+        }
+
+        static Guid GetRandomApartment()
+        {
+            var id = context
+                .Apartments.Where(q => q.State == ApartmentState.Active)
+                .OrderBy(q => Guid.NewGuid()).First().Id;
+
+            return id;
         }
     }
 }

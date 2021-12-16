@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Booking.Controllers
 {
-    public class BaseController<T> : Controller where T : BaseModel, new()
+    public class BaseController<T> : Controller where T : class, new()
     {
         private readonly IRepository<T> _db;
 
@@ -49,11 +49,15 @@ namespace Booking.Controllers
         [HttpPost]
         public virtual async Task<ActionResult> Edit(T input)
         {
-            if (!ModelState.IsValid) { return View("CreateOrEdit", input); }
-            var item = await _db.GetById(input.Id);
-            if (item == null) { return NotFound(); }
+            if (input is BaseModel)
+            {
+                if (!ModelState.IsValid) { return View("CreateOrEdit", input); }
+                var item = await _db.GetById((input as BaseModel).Id);
+                if (item == null) { return NotFound(); }
 
-            await _db.Update(input);
+                await _db.Update(input);
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
