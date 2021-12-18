@@ -2,6 +2,7 @@
 using Booking.DAL.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Booking.Areas.HosterArea.Controllers
@@ -15,6 +16,16 @@ namespace Booking.Areas.HosterArea.Controllers
         {
             _db = db;
         }
+        public virtual async Task<ActionResult> Details(Guid? id)
+        {
+            if (id == null) { return BadRequest(); }
+
+            var item = await _db.Rents.GetByFilerWithInclude(q => q.Id == id.Value, new[] { "Explorer", "Apartment" });
+            if (item.Count == 0) { return NotFound(); }
+
+            return View(item.First());
+        }
+
 
         public async Task<ActionResult> Approve(Guid id)
         {

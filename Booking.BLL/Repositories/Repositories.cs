@@ -14,6 +14,8 @@ namespace Booking.BLL.Repositories
         private IHosterRepository _hoster;
         private IApartmentRepository _apartment;
         private IApartmentFeatureRepository _apartmentFeature;
+        private IRateRepository _rate;
+        private IComplainRepository _complaint;
 
         public Repositories(IServiceProvider services)
         {
@@ -34,5 +36,8 @@ namespace Booking.BLL.Repositories
 
         public IApartmentFeatureRepository ApartmentFeatures => _apartmentFeature ??= _services.GetRequiredService<IApartmentFeatureRepository>();
 
+        public IRateRepository Rates => _rate ??= _services.GetRequiredService<IRateRepository>();
+
+        public IComplainRepository Complaints => _complaint ??= _services.GetRequiredService<IComplainRepository>();
     }
 }

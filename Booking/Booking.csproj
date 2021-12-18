@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <Folder Include="Log\" />
-    <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
   <ItemGroup>

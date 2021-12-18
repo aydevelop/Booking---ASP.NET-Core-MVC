@@ -132,6 +132,7 @@ body > footer {
     border-bottom: 3px solid #3498db !important;
     padding: 30px;
     font-size: 19px;
+    padding-top: 20px;
 }
 
     .rent-box-info i {
@@ -141,3 +142,7 @@ body > footer {
     .rent-box-info span {
         margin-left: 5px;
     }
+
+.form-feedback {
+    display: inline-block;
+}

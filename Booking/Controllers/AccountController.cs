@@ -1,4 +1,7 @@
-﻿using Booking.BLL.ViewModels;
+﻿using Booking.BLL.Contracts;
+using Booking.BLL.ViewModels;
+using Booking.DAL.Models;
+using Booking.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -7,11 +10,13 @@ namespace Booking.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IRepositories _db;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(IRepositories db, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
+            _db = db;
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -76,6 +81,22 @@ namespace Booking.Controllers
         {
             await _signInManager.SignOutAsync();
             return LocalRedirect("/");
+        }
+
+        public async Task<IActionResult> Complain(AccountComplainVM input)
+        {
+            if (!ModelState.IsValid)
+            {
+                return LocalRedirect($"~/HosterArea/Rent/Details/{input.RentId}");
+            }
+
+            Complaint c = new Complaint();
+            c.ExplorerId = input.Id;
+            c.Text = input.Text;
+            c.HosterId = User.GetUserId();
+            await _db.Complaints.Add(c);
+
+            return LocalRedirect($"~/HosterArea/Rent/Details/{input.RentId}");
         }
     }
 }

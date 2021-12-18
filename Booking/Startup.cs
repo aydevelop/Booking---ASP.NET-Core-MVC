@@ -31,10 +31,12 @@ namespace Booking
             services.AddDInjection();
             services.AddLibrary();
             services.AddAuth();
+            services.AddCorsServices();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCorsServices();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

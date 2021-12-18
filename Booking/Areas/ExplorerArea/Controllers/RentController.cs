@@ -6,6 +6,7 @@ using Booking.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Booking.Areas.ExplorerArea.Controllers
@@ -23,24 +24,33 @@ namespace Booking.Areas.ExplorerArea.Controllers
 
         public async Task<ActionResult> Index(RentIndexVM input)
         {
-            var rents = await _db.Rents.GetByFilerWithInclude(
-                q => q.ExplorerId == User.GetUserId(),
-                new string[] { "Apartment" }
-            );
-
             RentIndexVM model = new RentIndexVM();
-            model.rents = rents;
-            model.rentId = input.rentId;
-
-            if (input.rentId != null)
+            if (input.RentId != null)
             {
-                model.rent = await _db.Rents.GetById(input.rentId.Value);
-                if (input.deactivate != null)
+                model.RentId = input.RentId;
+            }
+
+            if (input.RentId != null)
+            {
+                var findRent = await _db.Rents.GetByFilerWithInclude(q => q.Id == input.RentId.Value, new[] { "Rate" });
+                if (findRent.Count > 0)
                 {
-                    model.rent.State = RentState.Inactive;
-                    await _db.Rents.Update(model.rent);
+                    model.Rent = findRent.First();
+                    if (input.Deactivate != null)
+                    {
+                        model.Rent.State = RentState.Inactive;
+                        await _db.Rents.Update(model.Rent);
+                    }
                 }
             }
+
+            var all = await _db.Explorers.GetAll();
+            var userId = User.GetUserId();
+
+            model.Rents = await _db.Rents.GetByFilerWithInclude(
+                q => q.ExplorerId == userId,
+                new string[] { "Apartment" }
+            );
 
             return View(model);
         }
@@ -74,6 +84,18 @@ namespace Booking.Areas.ExplorerArea.Controllers
             await _db.Rents.Add(rent);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateFeedback(RentCreateFeedbackVM input)
+        {
+            Rate rate = new Rate();
+            rate.ApartmentId = input.ApartmentId;
+            rate.RentId = input.RentId;
+            rate.Value = input.Rate;
+            await _db.Rates.Add(rate);
+
+            return RedirectToAction(nameof(Index), new { RentId = input.RentId });
         }
     }
 }

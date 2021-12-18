@@ -4,14 +4,16 @@ using Booking.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Booking.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211218140013_AddRateTable")]
+    partial class AddRateTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,36 +86,6 @@ namespace Booking.DAL.Migrations
                     b.HasIndex("FeatureId");
 
                     b.ToTable("ApartmentFeature");
-                });
-
-            modelBuilder.Entity("Booking.DAL.Models.Complaint", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ExplorerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ExplorerId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("HosterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("HosterId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ExplorerId1");
-
-                    b.HasIndex("HosterId1");
-
-                    b.ToTable("Complaints");
                 });
 
             modelBuilder.Entity("Booking.DAL.Models.Feature", b =>
@@ -495,21 +467,6 @@ namespace Booking.DAL.Migrations
                     b.Navigation("Apartment");
 
                     b.Navigation("Feature");
-                });
-
-            modelBuilder.Entity("Booking.DAL.Models.Complaint", b =>
-                {
-                    b.HasOne("Booking.DAL.Models.Explorer", "Explorer")
-                        .WithMany()
-                        .HasForeignKey("ExplorerId1");
-
-                    b.HasOne("Booking.DAL.Models.Hoster", "Hoster")
-                        .WithMany()
-                        .HasForeignKey("HosterId1");
-
-                    b.Navigation("Explorer");
-
-                    b.Navigation("Hoster");
                 });
 
             modelBuilder.Entity("Booking.DAL.Models.Rate", b =>

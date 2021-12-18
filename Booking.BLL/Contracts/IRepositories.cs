@@ -9,5 +9,7 @@
         public IFeatureRepository Features { get; }
         public IRentRepository Rents { get; }
         public IApartmentFeatureRepository ApartmentFeatures { get; }
+        public IRateRepository Rates { get; }
+        public IComplainRepository Complaints { get; }
     }
 }

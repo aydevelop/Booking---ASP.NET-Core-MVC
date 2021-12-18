@@ -24,23 +24,30 @@ namespace Booking.DAL
             context.Database.Migrate();
             UserManager<IdentityUser> userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
             RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var passwordHasher = new PasswordHasher<IdentityUser>();
 
             var admin = new IdentityUser
             {
                 UserName = "admin01",
-                Email = "admin01@mail.com"
+                Email = "admin01@mail.com",
             };
 
             var hoster = new Hoster
             {
+                FirstName = "Jermey",
+                LastName = "Langosh",
                 UserName = "hoster01",
-                Email = "hoster01@mail.com"
+                Email = "hoster01@mail.com",
+                PasswordHash = passwordHasher.HashPassword(null, "Pa$$w0rd")
             };
 
             var explorer = new Explorer
             {
+                FirstName = "Bobbie",
+                LastName = "Howe",
                 UserName = "explorer01",
-                Email = "explorer01@mail.com"
+                Email = "explorer01@mail.com",
+                PasswordHash = passwordHasher.HashPassword(null, "Pa$$w0rd")
             };
 
             await roleManager.CreateAsync(new IdentityRole("admin"));
@@ -48,8 +55,8 @@ namespace Booking.DAL
             await roleManager.CreateAsync(new IdentityRole("explorer"));
 
             await userManager.CreateAsync(admin, "Pa$$w0rd");
-            await userManager.CreateAsync(hoster, "Pa$$w0rd");
-            await userManager.CreateAsync(explorer, "Pa$$w0rd");
+            await context.Explorers.AddAsync(explorer);
+            await context.Hosters.AddAsync(hoster);
 
             await userManager.AddToRoleAsync(admin, "admin");
             await userManager.AddToRoleAsync(hoster, "hoster");
@@ -105,32 +112,32 @@ namespace Booking.DAL
                 new Apartment {
                     Name="Mountain Residence", Address="Chaikovskogo 127",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
-                    Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
-                    Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First(),
+                    Hoster=GetRandomHoster(),
+                    Location=GetRandomLocation(),
                 },
                 new Apartment {
                     Name="Cities Gallery", Address="Tomashivs'koho 4",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
-                    Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
-                    Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First()
+                    Hoster=GetRandomHoster(),
+                    Location=GetRandomLocation()
                 },
                 new Apartment {
                     Name="Opera Passage", Address="Baseina Street 77a",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
-                    Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
-                    Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First()
+                    Hoster=GetRandomHoster(),
+                    Location=GetRandomLocation()
                 },
                 new Apartment {
                     Name="Opera Passage2", Address="Baseina Street 7a",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
-                    Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
-                    Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First()
+                    Hoster=GetRandomHoster(),
+                    Location=GetRandomLocation()
                 },
                 new Apartment {
                     Name="Opera Passage3", Address="Baseina Street 277a",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
-                    Hoster=context.Hosters.Where(q=>q.State == HosterState.Active).OrderBy(q=>Guid.NewGuid()).First(),
-                    Location=context.Locations.Where(q=>q.State == LocationState.Active).OrderBy(q=>Guid.NewGuid()).First()
+                    Hoster=GetRandomHoster(),
+                    Location=GetRandomLocation()
                 }
             };
 
@@ -141,9 +148,9 @@ namespace Booking.DAL
             {
                 context.ApartmentFeature.Add(new ApartmentFeature()
                 {
-                    ApartmentId = item.Id,
-                    FeatureId = context.Features.Where(q => q.State == FeatureState.Active)
-                    .OrderBy(q => Guid.NewGuid()).First().Id,
+                    Apartment = item,
+                    Feature = context.Features.Where(q => q.State == FeatureState.Active)
+                    .OrderBy(q => Guid.NewGuid()).First(),
                 });
             }
             await context.SaveChangesAsync();
@@ -151,34 +158,40 @@ namespace Booking.DAL
             var rents = new List<Rent>
             {
                 new Rent {
+                    Explorer = explorer,
                     ExplorerId = Guid.Parse(explorer.Id),
-                    ApartmentId = GetRandomApartment(),
-                    StartDate = DateTime.Now.AddDays(1), EndDate = DateTime.Now.AddDays(2), State = RentState.Inactive
-                },
-                 new Rent {
-                    ExplorerId = Guid.Parse(explorer.Id),
-                    ApartmentId = GetRandomApartment(),
-                    StartDate = DateTime.Now.AddDays(1), EndDate = DateTime.Now.AddDays(2), State = RentState.Requested
+                    Apartment = GetRandomApartment(),
+                    StartDate = DateTime.Now.AddDays(1), EndDate=DateTime.Now.AddDays(2), State=RentState.Requested
                 },
                 new Rent {
+                    Explorer = explorer,
                     ExplorerId = Guid.Parse(explorer.Id),
-                    ApartmentId = GetRandomApartment(),
-                    StartDate = DateTime.Now.AddDays(1), EndDate = DateTime.Now.AddDays(2), State = RentState.Requested
+                    Apartment = GetRandomApartment(),
+                    StartDate = DateTime.Now.AddDays(11), EndDate=DateTime.Now.AddDays(2), State=RentState.Approved
                 },
                 new Rent {
+                    Explorer = explorer,
                     ExplorerId = Guid.Parse(explorer.Id),
-                    ApartmentId = GetRandomApartment(),
-                    StartDate = DateTime.Now.AddDays(1), EndDate = DateTime.Now.AddDays(2), State = RentState.Approved
+                    Apartment = GetRandomApartment(),
+                    StartDate = DateTime.Now.AddDays(3), EndDate=DateTime.Now.AddDays(2), State=RentState.Approved
                 },
                 new Rent {
+                    Explorer = explorer,
                     ExplorerId = Guid.Parse(explorer.Id),
-                    ApartmentId = GetRandomApartment(),
-                    StartDate = DateTime.Now.AddDays(1), EndDate = DateTime.Now.AddDays(2), State = RentState.Requested
+                    Apartment = GetRandomApartment(),
+                    StartDate = DateTime.Now.AddDays(7), EndDate=DateTime.Now.AddDays(2), State=RentState.Rejected
                 },
                 new Rent {
+                    Explorer = explorer,
                     ExplorerId = Guid.Parse(explorer.Id),
-                    ApartmentId = GetRandomApartment(),
-                    StartDate = DateTime.Now.AddDays(1), EndDate = DateTime.Now.AddDays(2), State = RentState.Inactive
+                    Apartment = GetRandomApartment(),
+                    StartDate = DateTime.Now.AddDays(3), EndDate=DateTime.Now.AddDays(2), State=RentState.Completed
+                },
+                new Rent {
+                    Explorer = GetRandomExplorer(),
+                    ExplorerId = Guid.Parse(explorer.Id),
+                    Apartment = GetRandomApartment(),
+                    StartDate = DateTime.Now.AddDays(9), EndDate=DateTime.Now.AddDays(2), State=RentState.Inactive
                 },
             };
 
@@ -186,22 +199,33 @@ namespace Booking.DAL
             await context.SaveChangesAsync();
         }
 
-        static Guid GetRandomExplorer()
+        static Explorer GetRandomExplorer()
         {
-            var id = context
-                .Explorers.Where(q => q.State == ExplorerState.Active)
-                .OrderBy(q => Guid.NewGuid()).First().Id;
 
-            return Guid.Parse(id);
+            return context
+                .Explorers.Where(q => q.State == ExplorerState.Active)
+                .OrderBy(q => Guid.NewGuid()).First();
         }
 
-        static Guid GetRandomApartment()
+        static Apartment GetRandomApartment()
         {
-            var id = context
+            return context
                 .Apartments.Where(q => q.State == ApartmentState.Active)
-                .OrderBy(q => Guid.NewGuid()).First().Id;
+                .OrderBy(q => Guid.NewGuid()).First();
+        }
 
-            return id;
+        static Hoster GetRandomHoster()
+        {
+            return context
+                .Hosters.Where(q => q.State == HosterState.Active)
+                .OrderBy(q => Guid.NewGuid()).First();
+        }
+
+        static Location GetRandomLocation()
+        {
+            return context
+                .Locations.Where(q => q.State == LocationState.Active)
+                .OrderBy(q => Guid.NewGuid()).First();
         }
     }
 }

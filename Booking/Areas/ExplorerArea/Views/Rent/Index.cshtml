@@ -7,23 +7,23 @@
 <h3 class="text-center mt-5 mb-4 font-weight-bold title-small">My Rents</h3>
 
 
-@if (Model.rent != null)
+@if (Model.Rent != null)
 {
     <div class="rent-box-info">
         <i class="fa fa-home"></i>
         @{
-            var days = (Model.rent.EndDate - Model.rent.StartDate).Days;
+            var days = (Model.Rent.StartDate - DateTime.Now).Days;
         }
 
-        @if (Model.rent.State == RentState.Requested)
+        @if (Model.Rent.State == RentState.Requested)
         {
             <span>Waiting for rent confirmation</span>
         }
-        else if (Model.rent.State == RentState.Rejected)
+        else if (Model.Rent.State == RentState.Rejected)
         {
             <span>Hoster reject request rent</span>
         }
-        else if (Model.rent.State == RentState.Approved)
+        else if (Model.Rent.State == RentState.Approved)
         {
             <span>Request confirmed.</span>
             <span>
@@ -31,16 +31,43 @@
             </span>
             if (days >= 7)
             {
-                <span><a asp-action="Index" asp-route-deactivate="true" asp-route-rentId="@Model.rentId"><b>Deactivate</b></a></span>
+                <span><a asp-action="Index" asp-route-deactivate="true" asp-route-rentId="@Model.RentId"><b>Deactivate</b></a></span>
             }
-            else if (days < 7)
+            else
             {
                 <span>You cannot deactivate the request</span>
             }
         }
-        else if (Model.rent.State == RentState.Inactive)
+        else if (Model.Rent.State == RentState.Inactive)
         {
             <span>Rent is not active</span>
+        }
+        else if (Model.Rent.State == RentState.Completed)
+        {
+            <span>Rent is completed.</span>
+            if (Model.Rent.Rate == null)
+                {
+                <span>You can rate:</span>
+                <span>
+                <form asp-area="ExplorerArea" asp-controller="Rent" asp-action="CreateFeedback" class="form-feedback" method="post">
+                    <input type="hidden" name="ApartmentId" value="@Model.Rent.ApartmentId" />
+                    <input type="hidden" name="RentId" value="@Model.RentId" />
+
+                    <select name="rate" id="rate" class="form-select" aria-label="Leave feedback">
+                        <option selected>Select</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </form>
+                </span>
+            }
+            else
+            {
+                <span>Your rate is @Model.Rent.Rate.Value</span>
+            }
         }
     </div>
 }
@@ -48,7 +75,7 @@
 <table class="table">
     <thead>
         @{
-            var rent = Model.rents.FirstOrDefault();
+            var rent = Model.Rents.FirstOrDefault();
         }
         <tr>
             <th>
@@ -67,10 +94,10 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.rents)
+        @foreach (var item in Model.Rents)
         {
             string selectRow = "";
-            @if (item.Id == Model.rentId)
+            @if (item.Id == Model.RentId)
             {
                 selectRow = "bg-info";
             }
@@ -95,3 +122,9 @@
         }
     </tbody>
 </table>
+
+
+@section Scripts
+{
+<script src="~/js/rent-create-feedback.js"></script>
+}
