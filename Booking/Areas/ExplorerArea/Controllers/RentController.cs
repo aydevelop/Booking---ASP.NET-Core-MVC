@@ -63,6 +63,12 @@ namespace Booking.Areas.ExplorerArea.Controllers
                 return NotFound();
             }
 
+            //var user = (await _db.Explorers.GetByFiler(q => q.Id == User.GetUserId().ToString())).First();
+            //if (user.State == ExplorerState.Banned)
+            //{
+            //    return null;
+            //}
+
             RentCreateVM model = new RentCreateVM();
             model.ApartmentId = apartment.Id;
             model.MaxDurationInDays = apartment.MaxDurationInDays;

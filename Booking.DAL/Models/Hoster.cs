@@ -19,6 +19,4 @@ namespace Booking.DAL.Models
             }
         }
     }
-
-
 }

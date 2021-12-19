@@ -1,5 +1,6 @@
 ﻿using Booking.BLL.Contracts;
 using Booking.DAL;
+using Booking.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,12 @@ namespace Booking.BLL.Repositories
 
         public ValueTask<T> GetById(Guid id)
         {
-            return _db.Set<T>().FindAsync(id);
+            if (typeof(T).IsSubclassOf(typeof(BaseModel)))
+            {
+                return _db.Set<T>().FindAsync(id);
+            }
+
+            return _db.Set<T>().FindAsync(id.ToString());
         }
 
         public Task<List<T>> GetAll()
@@ -55,13 +61,13 @@ namespace Booking.BLL.Repositories
             return query.Where(predicate).ToListAsync();
         }
 
-        public Task Add(T entity)
+        public virtual Task Add(T entity)
         {
             _db.Add(entity);
             return SaveAsync();
         }
 
-        public Task Update(T entity)
+        public virtual Task Update(T entity)
         {
             _db.Entry(entity).State = EntityState.Modified;
             return SaveAsync();

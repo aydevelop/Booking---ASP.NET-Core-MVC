@@ -62,7 +62,6 @@ namespace Booking.DAL
             await userManager.AddToRoleAsync(hoster, "hoster");
             await userManager.AddToRoleAsync(explorer, "explorer");
 
-
             var locations = new List<Location>
             {
                 new Location { Name="Lviv", State=LocationState.Active },
@@ -188,7 +187,7 @@ namespace Booking.DAL
                     StartDate = DateTime.Now.AddDays(3), EndDate=DateTime.Now.AddDays(2), State=RentState.Completed
                 },
                 new Rent {
-                    Explorer = GetRandomExplorer(),
+                    Explorer = explorer,
                     ExplorerId = Guid.Parse(explorer.Id),
                     Apartment = GetRandomApartment(),
                     StartDate = DateTime.Now.AddDays(9), EndDate=DateTime.Now.AddDays(2), State=RentState.Inactive
@@ -197,35 +196,54 @@ namespace Booking.DAL
 
             context.Rents.AddRange(rents);
             await context.SaveChangesAsync();
-        }
 
-        static Explorer GetRandomExplorer()
-        {
+            var complaints = new List<Complaint>();
+            for (int i = 0; i < 5; i++)
+            {
+                Complaint complaint = new Complaint();
+                Explorer cExplorer = GetRandomExplorer();
+                Hoster cHoster = GetRandomHoster();
 
-            return context
-                .Explorers.Where(q => q.State == ExplorerState.Active)
-                .OrderBy(q => Guid.NewGuid()).First();
-        }
+                complaint.Explorer = cExplorer;
+                complaint.ExplorerId = Guid.Parse(cExplorer.Id);
 
-        static Apartment GetRandomApartment()
-        {
-            return context
-                .Apartments.Where(q => q.State == ApartmentState.Active)
-                .OrderBy(q => Guid.NewGuid()).First();
-        }
+                complaint.Hoster = cHoster;
+                complaint.HosterId = Guid.Parse(cHoster.Id);
 
-        static Hoster GetRandomHoster()
-        {
-            return context
-                .Hosters.Where(q => q.State == HosterState.Active)
-                .OrderBy(q => Guid.NewGuid()).First();
-        }
+                complaint.Text = "Smoked in the apartment";
+                complaints.Add(complaint);
+            }
 
-        static Location GetRandomLocation()
-        {
-            return context
-                .Locations.Where(q => q.State == LocationState.Active)
-                .OrderBy(q => Guid.NewGuid()).First();
+            context.Complaints.AddRange(complaints);
+            await context.SaveChangesAsync();
+
+            static Explorer GetRandomExplorer()
+            {
+                return context
+                    .Explorers.Where(q => q.State == ExplorerState.Active)
+                    .OrderBy(q => Guid.NewGuid()).First();
+            }
+
+            static Apartment GetRandomApartment()
+            {
+                return context
+                    .Apartments.Where(q => q.State == ApartmentState.Active)
+                    .OrderBy(q => Guid.NewGuid()).First();
+            }
+
+            static Hoster GetRandomHoster()
+            {
+                return context
+                    .Hosters.Where(q => q.State == HosterState.Active)
+                    .OrderBy(q => Guid.NewGuid()).First();
+            }
+
+            static Location GetRandomLocation()
+            {
+                return context
+                    .Locations.Where(q => q.State == LocationState.Active)
+                    .OrderBy(q => Guid.NewGuid()).First();
+            }
         }
     }
 }

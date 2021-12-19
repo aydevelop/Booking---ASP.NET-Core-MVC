@@ -1,5 +1,5 @@
 ﻿using Booking.BLL.Contracts;
-using Booking.DAL.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -31,7 +31,15 @@ namespace Booking.Controllers
         public virtual async Task<ActionResult> CreateOrEdit(Guid id)
         {
             var item = await _db.GetById(id);
-            return View(item != null ? item : new T());
+            if (item != null) { return View(item); }
+
+            var newItem = new T();
+            if (typeof(T).IsSubclassOf(typeof(IdentityUser)))
+            {
+                (newItem as IdentityUser).Id = String.Empty;
+            }
+
+            return View(newItem);
         }
 
         [HttpPost]
@@ -49,15 +57,9 @@ namespace Booking.Controllers
         [HttpPost]
         public virtual async Task<ActionResult> Edit(T input)
         {
-            if (input is BaseModel)
-            {
-                if (!ModelState.IsValid) { return View("CreateOrEdit", input); }
-                var item = await _db.GetById((input as BaseModel).Id);
-                if (item == null) { return NotFound(); }
+            if (!ModelState.IsValid) { return View("CreateOrEdit", input); }
 
-                await _db.Update(input);
-            }
-
+            await _db.Update(input);
             return RedirectToAction(nameof(Index));
         }
 

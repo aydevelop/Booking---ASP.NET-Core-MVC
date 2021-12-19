@@ -20,7 +20,8 @@ namespace Booking.Areas.HosterArea.Controllers
         {
             if (id == null) { return BadRequest(); }
 
-            var item = await _db.Rents.GetByFilerWithInclude(q => q.Id == id.Value, new[] { "Explorer", "Apartment" });
+            var item = await _db.Rents.GetByFilerWithInclude(q => q.Id == id.Value,
+                new[] { "Explorer", "Apartment", "Complaint" });
             if (item.Count == 0) { return NotFound(); }
 
             return View(item.First());

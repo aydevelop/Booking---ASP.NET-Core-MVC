@@ -87,16 +87,17 @@ namespace Booking.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return LocalRedirect($"~/HosterArea/Rent/Details/{input.RentId}");
+                return LocalRedirect($"/HosterArea/Rent/Details/{input.RentId}");
             }
 
             Complaint c = new Complaint();
             c.ExplorerId = input.Id;
             c.Text = input.Text;
             c.HosterId = User.GetUserId();
+            c.RentId = input.RentId;
             await _db.Complaints.Add(c);
 
-            return LocalRedirect($"~/HosterArea/Rent/Details/{input.RentId}");
+            return LocalRedirect($"/HosterArea/Rent/Details/{input.RentId}");
         }
     }
 }

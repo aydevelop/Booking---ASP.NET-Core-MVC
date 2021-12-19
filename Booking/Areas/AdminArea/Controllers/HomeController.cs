@@ -26,5 +26,11 @@ namespace Booking.Areas.Admin.Controllers
 
             return View(model);
         }
+
+        public async Task<ActionResult> Complaints()
+        {
+            var complaints = await _db.Complaints.GetWithInclude(new[] { "Hoster", "Explorer" });
+            return View(complaints);
+        }
     }
 }

@@ -19,5 +19,6 @@ namespace Booking.DAL.Models
         public virtual Apartment Apartment { get; set; }
 
         public virtual Rate Rate { get; set; }
+        public virtual Complaint Complaint { get; set; }
     }
 }

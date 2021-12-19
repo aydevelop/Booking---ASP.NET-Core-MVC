@@ -33,12 +33,21 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Explorer.FullName)
-            <span>
-                <a data-toggle="modal" data-target="#ModalComplainForm"
+            @if (Model.Complaint == null)
+            {
+                <span>
+                    <a data-toggle="modal" data-target="#ModalComplainForm"
                    class="text-danger ml-3 font-weight-bold" href="#" id="btn-complain">
-                    [ Complain ]
-                </a>
-            </span>
+                        [ Complain ]
+                    </a>
+                </span>
+            }
+            else
+            {
+                <span class="font-weight-bold">
+                    [ Complain: @Model.Complaint.Text ]
+                </span>
+            }
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Apartment)

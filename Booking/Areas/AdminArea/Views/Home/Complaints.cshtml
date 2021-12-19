@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Booking.DAL.Models.Complaint>
+
+@{
+    ViewData["Title"] = "Complaints";
+}
+
+<h1>Complaints</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Text)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hoster)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Explorer)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Text)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Hoster.FullName)
+                </td>
+                <td>
+                    <a asp-area="AdminArea" asp-action="Details" asp-controller="Explorer" asp-route-id="@item.Explorer.Id">
+                        @Html.DisplayFor(modelItem => item.Explorer.FullName)
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,7 +1,8 @@
 ﻿@model Booking.DAL.Models.Hoster
 
 @{
-    string action = Model.Id == String.Empty ? "Create" : "Edit";
+    var id = @Model.Id.ToString();
+    string action = (String.IsNullOrEmpty(id) || id == Guid.Empty.ToString()) ? "Create" : "Edit";
     ViewData["Title"] = action;
 }
 
