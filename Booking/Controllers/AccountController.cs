@@ -83,6 +83,11 @@ namespace Booking.Controllers
             return LocalRedirect("/");
         }
 
+        public ActionResult AccessDenied()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Complain(AccountComplainVM input)
         {
             if (!ModelState.IsValid)
@@ -93,7 +98,7 @@ namespace Booking.Controllers
             Complaint c = new Complaint();
             c.ExplorerId = input.Id;
             c.Text = input.Text;
-            c.HosterId = User.GetUserId();
+            c.HosterId = User.GetUserGuId();
             c.RentId = input.RentId;
             await _db.Complaints.Add(c);
 

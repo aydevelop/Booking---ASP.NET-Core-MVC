@@ -1,5 +1,4 @@
 ﻿using Booking.BLL.Contracts;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -34,11 +33,6 @@ namespace Booking.Controllers
             if (item != null) { return View(item); }
 
             var newItem = new T();
-            if (typeof(T).IsSubclassOf(typeof(IdentityUser)))
-            {
-                (newItem as IdentityUser).Id = String.Empty;
-            }
-
             return View(newItem);
         }
 

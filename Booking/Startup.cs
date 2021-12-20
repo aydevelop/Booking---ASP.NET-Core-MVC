@@ -1,6 +1,9 @@
+using Booking.BLL.Contracts;
+using Booking.BLL.Jobs;
 using Booking.DAL;
 using Booking.Extensions;
 using Booking.Middlewares;
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +22,7 @@ namespace Booking
         }
 
         public IConfiguration Configuration { get; }
+        public IServiceCollection Services { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -34,7 +38,7 @@ namespace Booking
             services.AddCorsServices();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IRepositories repositories)
         {
             app.UseCorsServices();
             if (env.IsDevelopment())
@@ -45,6 +49,7 @@ namespace Booking
             {
                 app.UseExceptionHandler("/ExceptionHandler");
                 app.UseHsts();
+                RecurringJob.AddOrUpdate(() => new UnbanUserJob(repositories.Explorers).Run(), UnbanUserJob.Interval);
             }
 
             app.UseMiddleware<ExceptionMiddleware>();
@@ -63,7 +68,11 @@ namespace Booking
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapHangfireDashboard();
             });
+
+
         }
     }
 }

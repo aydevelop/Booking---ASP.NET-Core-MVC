@@ -13,6 +13,7 @@ namespace Booking.Areas.ExplorerArea.Controllers
 {
     [Authorize]
     [Area("ExplorerArea")]
+    [Authorize(Roles = "explorer")]
     public class RentController : Controller
     {
         private readonly IRepositories _db;
@@ -45,7 +46,7 @@ namespace Booking.Areas.ExplorerArea.Controllers
             }
 
             var all = await _db.Explorers.GetAll();
-            var userId = User.GetUserId();
+            var userId = User.GetUserGuId();
 
             model.Rents = await _db.Rents.GetByFilerWithInclude(
                 q => q.ExplorerId == userId,
@@ -63,11 +64,11 @@ namespace Booking.Areas.ExplorerArea.Controllers
                 return NotFound();
             }
 
-            //var user = (await _db.Explorers.GetByFiler(q => q.Id == User.GetUserId().ToString())).First();
-            //if (user.State == ExplorerState.Banned)
-            //{
-            //    return null;
-            //}
+            var user = (await _db.Explorers.GetByFiler(q => q.Id == User.GetUserId())).First();
+            if (user.State == ExplorerState.Banned)
+            {
+                return Forbid();
+            }
 
             RentCreateVM model = new RentCreateVM();
             model.ApartmentId = apartment.Id;
@@ -83,7 +84,7 @@ namespace Booking.Areas.ExplorerArea.Controllers
 
             Rent rent = new Rent();
             rent.ApartmentId = model.ApartmentId;
-            rent.ExplorerId = User.GetUserId();
+            rent.ExplorerId = User.GetUserGuId();
             rent.StartDate = model.StartDate;
             rent.EndDate = model.EndDate;
             rent.State = RentState.Requested;

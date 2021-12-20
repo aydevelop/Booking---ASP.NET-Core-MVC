@@ -47,7 +47,9 @@ namespace Booking.DAL
                 LastName = "Howe",
                 UserName = "explorer01",
                 Email = "explorer01@mail.com",
-                PasswordHash = passwordHasher.HashPassword(null, "Pa$$w0rd")
+                PasswordHash = passwordHasher.HashPassword(null, "Pa$$w0rd"),
+                State = ExplorerState.Banned,
+                DateFromState = DateTime.Now.AddDays(4)
             };
 
             await roleManager.CreateAsync(new IdentityRole("admin"));

@@ -1,6 +1,7 @@
 ﻿using Booking.BLL.Contracts;
 using Booking.DAL;
 using Booking.DAL.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace Booking.BLL.Repositories
@@ -31,6 +32,13 @@ namespace Booking.BLL.Repositories
             }
 
             _db.Explorers.Update(item);
+            return _db.SaveChangesAsync();
+        }
+
+        public override Task Add(Explorer entity)
+        {
+            entity.Id = Guid.NewGuid().ToString();
+            _db.Explorers.Add(entity);
             return _db.SaveChangesAsync();
         }
     }

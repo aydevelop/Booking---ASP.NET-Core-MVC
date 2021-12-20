@@ -1,8 +1,8 @@
-﻿@model Booking.DAL.Models.Explorer
+﻿@using Booking.BLL.ViewModels.AdminArea
+@model ExplorerCreateEditVM
 
 @{
-    var id = @Model.Id.ToString();
-    string action = (String.IsNullOrEmpty(id) || id == Guid.Empty.ToString()) ? "Create" : "Edit";
+    string action = Model.Id == Guid.Empty ? "Create" : "Edit";
     ViewData["Title"] = action;
 }
 
@@ -12,7 +12,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-area="adminarea" asp-action="@action">
+        <form asp-area="adminarea" asp-action="@(action + "VM")">
             <input type="hidden" asp-for="Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
