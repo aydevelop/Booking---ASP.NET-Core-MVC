@@ -23,5 +23,6 @@ namespace Booking.DAL.Models
         public virtual Location Location { get; set; }
 
         public virtual List<ApartmentFeature> Features { get; set; } = new List<ApartmentFeature>();
+        public virtual List<Rate> Rates { get; set; } = new List<Rate>();
     }
 }

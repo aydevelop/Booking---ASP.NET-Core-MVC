@@ -21,6 +21,7 @@ namespace Booking.BLL.Repositories
             var query = _db.Apartments
                 .Include(q => q.Features).ThenInclude(f => f.Feature)
                 .Include(q => q.Hoster)
+                .Include(q => q.Rates)
                 .Include(q => q.Location);
 
             return query.ToListAsync();

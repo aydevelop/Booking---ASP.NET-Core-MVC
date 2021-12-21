@@ -57,7 +57,7 @@
                     @Html.DisplayFor(modelItem => item.Address)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AvgScore)
+                    @(String.Format("{0:0.0}", item.Rates.Average(q=>q.Value)))
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.MaxDurationInDays) days
@@ -73,7 +73,11 @@
                 </td>
                 <td>
                     <div class="btn-group group-action" role="group">
-                        <partial name="Partials/_GroupButtonPartial" model="@item.Id" />
+                        <div class="btn-group group-action" role="group">
+                            <a class="btn btn-primary btn-sm btn-primary" style="width:70px" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a class="btn btn-primary btn-sm btn-success" style="width:70px" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            <a class="btn btn-primary btn-sm btn-danger" style="width:70px" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </div>
                     </div>
                 </td>
             </tr>

@@ -10,7 +10,9 @@
     {
         <div class="col-4">
             <div class="card shadow mb-5">
-                <svg class="bd-placeholder-img card-img-top" width="100%" height="185" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg>
+                <div class="card-img-top">
+                    <img src="~/img/apartments/@(new Random().Next(1,11)).jpg" alt="booking" class="booking-img" />
+                </div>
 
                 <div class="card-body">
                     <h4 class="card-text pb-3 text-center">@item.Name</h4>
@@ -27,11 +29,22 @@
 
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="rating">
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
-                            <i class="fa fa-star"></i>
+                            @{
+                                double avgRates = @item.Rates.Average(q => q.Value);
+                                int avgInt = Convert.ToInt32(avgRates);
+                                double resDouble = avgRates % avgInt;
+                            }
+
+                            @for (int i = 0; i <= avgInt; i++)
+                            {
+                                <i class="fa fa-star"></i>
+                            }
+
+                            @if (resDouble >= 0.5)
+                            {
+                                <i class="fa fa-star-half"></i>
+                            }
+
                         </div>
                         <div class="btn-group">
                             <a href="/ExplorerArea/Rent/Create?id=@item.Id" type="button" class="btn btn btn-success">Rent</a>

@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -15,6 +16,7 @@ namespace Booking.Extensions
         {
             var provider = services.BuildServiceProvider();
             var conf = provider.GetRequiredService<IConfiguration>();
+            var env = provider.GetRequiredService<IWebHostEnvironment>();
             services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LocationValidator>());
 
             services.AddHangfire(configuration => configuration
@@ -30,6 +32,7 @@ namespace Booking.Extensions
                 DisableGlobalLocks = true
             }));
             services.AddHangfireServer();
+
 
             return services;
         }

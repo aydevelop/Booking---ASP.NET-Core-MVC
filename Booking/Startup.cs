@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,19 +29,21 @@ namespace Booking
         {
             services.AddControllersWithViews();
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            {
+                options.ConfigureWarnings(x => x.Ignore(RelationalEventId.MultipleCollectionIncludeWarning));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
+
             services.AddMvc(
                 options => options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
 
             services.AddDInjection();
             services.AddLibrary();
             services.AddAuth();
-            services.AddCorsServices();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IRepositories repositories)
         {
-            app.UseCorsServices();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -71,8 +74,6 @@ namespace Booking
 
                 endpoints.MapHangfireDashboard();
             });
-
-
         }
     }
 }

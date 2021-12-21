@@ -16,7 +16,7 @@
         <span asp-validation-for="apartment.Name" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label asp-for="apartment.HosterId" class="control-label"></label>
+        <label class="text-warning">New owner of the apartment</label>
         <select asp-for="apartment.HosterId" class="form-control"
                 asp-items="@(new SelectList(@Model.Hosters, "Id", "FullName"))"></select>
         <span asp-validation-for="apartment.HosterId" class="text-danger"></span>

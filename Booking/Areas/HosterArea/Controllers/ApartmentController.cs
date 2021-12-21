@@ -4,6 +4,7 @@ using Booking.BLL.ViewModels.Data;
 using Booking.BLL.ViewModels.HosterArea;
 using Booking.Controllers;
 using Booking.DAL.Models;
+using Booking.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,10 @@ namespace Booking.Areas.HosterArea.Controllers
         {
             ApartmentIndexVM model = new ApartmentIndexVM();
             model.apartments = await _db.Apartments.GetApartmentsWithDependencies();
+            var userId = User.GetUserGuId();
+            model.apartments = model.apartments.Where(q => q.HosterId == userId).ToList();
             model.rents = await _db.Rents.GetWithInclude(new[] { "Explorer", "Apartment" });
+            model.rents = model.rents.Where(q => q.Apartment.HosterId == userId).ToList();
             return View(model);
         }
 

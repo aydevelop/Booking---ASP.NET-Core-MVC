@@ -16,6 +16,7 @@ namespace Booking.DAL
         public DbSet<Rent> Rents { get; set; }
         public DbSet<ApartmentFeature> ApartmentFeature { get; set; }
         public DbSet<Complaint> Complaints { get; set; }
+        public DbSet<Rate> Rates { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         { }

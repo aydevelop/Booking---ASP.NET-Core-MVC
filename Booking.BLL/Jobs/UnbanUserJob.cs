@@ -7,7 +7,7 @@ namespace Booking.BLL.Jobs
 {
     public class UnbanUserJob
     {
-        public static string Interval = "* * */1 * *";
+        public static string Interval = "* */1 * * *";
         private readonly IExplorerRepository _explorerRepository;
 
         public UnbanUserJob(IExplorerRepository explorerRepository)

@@ -9,7 +9,7 @@ namespace Booking.DAL.Models
         public Guid? RentId { get; set; }
         public Rent Rent { get; set; }
 
-        public Guid ApartmentId { get; set; }
+        public Guid? ApartmentId { get; set; }
         public Apartment Apartment { get; set; }
     }
 }

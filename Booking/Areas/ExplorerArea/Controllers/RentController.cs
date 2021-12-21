@@ -67,6 +67,7 @@ namespace Booking.Areas.ExplorerArea.Controllers
             var user = (await _db.Explorers.GetByFiler(q => q.Id == User.GetUserId())).First();
             if (user.State == ExplorerState.Banned)
             {
+                TempData["alert-msg"] = "You are banned until " + user.DateFromState?.ToShortDateString();
                 return Forbid();
             }
 

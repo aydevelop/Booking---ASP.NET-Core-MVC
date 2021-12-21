@@ -146,3 +146,15 @@ body > footer {
 .form-feedback {
     display: inline-block;
 }
+
+.alert-msg {
+    position: relative;
+    top: 8px;
+}
+
+.booking-img {
+    width: 92%;
+    margin: 0 auto;
+    display: block;
+    max-height: 220px;
+}
