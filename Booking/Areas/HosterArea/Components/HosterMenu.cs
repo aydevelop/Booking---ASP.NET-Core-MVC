@@ -3,6 +3,7 @@ using Booking.BLL.ViewModels.HosterArea;
 using Booking.DAL.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Booking.Areas.HosterArea.Components
 {
@@ -14,9 +15,9 @@ namespace Booking.Areas.HosterArea.Components
             _db = db;
         }
 
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            var rents = _db.Rents.GetAll().Result;
+            var rents = await _db.Rents.GetAll();
             HosterMenuVM model = new HosterMenuVM();
             model.ApprovedCount = rents.Where(q => q.State == RentState.Approved).Count();
             model.RejectedCount = rents.Where(q => q.State == RentState.Rejected).Count();

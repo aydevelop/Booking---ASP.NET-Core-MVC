@@ -19,6 +19,7 @@ namespace Booking.BLL.Jobs
         {
             var items = _explorerRepository.GetAll().Result;
             DateTime now = DateTime.Now;
+
             for (int i = 0; i < items.Count; i++)
             {
                 Explorer item = items[i];

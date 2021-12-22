@@ -2,16 +2,17 @@
 
 @{
     ViewData["Title"] = "Apartments";
+    int index = 0;
 }
-
 
 <div class="row">
     @foreach (var item in Model)
     {
+        index++;
         <div class="col-4">
             <div class="card shadow mb-5">
                 <div class="card-img-top">
-                    <img src="~/img/apartments/@(new Random().Next(1,11)).jpg" alt="booking" class="booking-img" />
+                    <img src="~/img/apartments/@(index).jpg" alt="booking" class="booking-img" />
                 </div>
 
                 <div class="card-body">
@@ -22,8 +23,10 @@
                     <div class="a-props ml-4 mt-4 mb-4">
                         @foreach (var prop in item.Features)
                         {
-                            <i class="fa fa-check"></i>
-                            <span>@prop.Feature.Name</span>
+                            <div>
+                                <i class="fa fa-check"></i>
+                                <span>@prop.Feature.Name</span>
+                            </div>
                         }
                     </div>
 

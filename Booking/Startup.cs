@@ -52,7 +52,6 @@ namespace Booking
             {
                 app.UseExceptionHandler("/ExceptionHandler");
                 app.UseHsts();
-                RecurringJob.AddOrUpdate(() => new UnbanUserJob(repositories.Explorers).Run(), UnbanUserJob.Interval);
             }
 
             app.UseMiddleware<ExceptionMiddleware>();
@@ -74,6 +73,12 @@ namespace Booking
 
                 endpoints.MapHangfireDashboard();
             });
+
+            RecurringJob.AddOrUpdate("UnbanUser", () =>
+                new UnbanUserJob(repositories.Explorers).Run(), UnbanUserJob.Interval);
+
+            RecurringJob.AddOrUpdate("DraftApartment", () =>
+                new DraftApartmentJob(repositories).Run(), DraftApartmentJob.Interval);
         }
     }
 }

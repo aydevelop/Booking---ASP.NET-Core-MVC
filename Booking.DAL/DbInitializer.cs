@@ -124,26 +124,33 @@ namespace Booking.DAL
                     Location=GetRandomLocation()
                 },
                 new Apartment {
-                    Name="Opera Passage", Address="Baseina Street 77a",
+                    Name="Opera Passage", Address="Avtozavodskaya 77a",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=hoster,
                     HosterId=Guid.Parse(hoster.Id),
                     Location=GetRandomLocation()
                 },
                 new Apartment {
-                    Name="Opera Passage2", Address="Baseina Street 7a",
+                    Name="Barra Family Resort", Address="Volkova 302",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=hoster,
                     HosterId=Guid.Parse(hoster.Id),
                     Location=GetRandomLocation()
                 },
                 new Apartment {
-                    Name="Opera Passage3", Address="Baseina Street 277a",
+                    Name="Allurapart Мalahyt", Address="Bogdanovskaya 67b",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=hoster,
                     HosterId=Guid.Parse(hoster.Id),
                     Location=GetRandomLocation()
-                }
+                },
+                new Apartment {
+                    Name="City Rooms", Address="Rishelievska 7",
+                    AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
+                    Hoster=hoster,
+                    HosterId=Guid.Parse(hoster.Id),
+                    Location=GetRandomLocation()
+                },
             };
 
             context.Apartments.AddRange(apartments);
@@ -151,12 +158,17 @@ namespace Booking.DAL
 
             foreach (Apartment item in context.Apartments)
             {
-                context.ApartmentFeature.Add(new ApartmentFeature()
+                var arrFeatures = context.Features.Where(q => q.State == FeatureState.Active).ToList();
+                arrFeatures.RemoveAt(new Random().Next(0, arrFeatures.Count));
+
+                foreach (var feature in arrFeatures)
                 {
-                    Apartment = item,
-                    Feature = context.Features.Where(q => q.State == FeatureState.Active)
-                    .OrderBy(q => Guid.NewGuid()).First(),
-                });
+                    context.ApartmentFeature.Add(new ApartmentFeature()
+                    {
+                        Apartment = item,
+                        Feature = feature,
+                    });
+                }
             }
             await context.SaveChangesAsync();
 
@@ -190,13 +202,19 @@ namespace Booking.DAL
                     Explorer = explorer,
                     ExplorerId = Guid.Parse(explorer.Id),
                     Apartment = GetRandomApartment(),
-                    StartDate = DateTime.Now.AddDays(3), EndDate=DateTime.Now.AddDays(2), State=RentState.Completed
+                    StartDate = DateTime.Now.AddDays(-13), EndDate=DateTime.Now.AddDays(-5), State=RentState.Completed
                 },
                 new Rent {
                     Explorer = explorer,
                     ExplorerId = Guid.Parse(explorer.Id),
                     Apartment = GetRandomApartment(),
                     StartDate = DateTime.Now.AddDays(9), EndDate=DateTime.Now.AddDays(2), State=RentState.Inactive
+                },
+                new Rent {
+                    Explorer = explorer,
+                    ExplorerId = Guid.Parse(explorer.Id),
+                    Apartment = GetRandomApartment(),
+                    StartDate = DateTime.Now.AddDays(-1), EndDate=DateTime.Now, State=RentState.Approved
                 },
             };
 
