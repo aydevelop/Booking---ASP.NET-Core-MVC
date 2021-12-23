@@ -98,9 +98,9 @@ namespace Booking.Controllers
             }
 
             Complaint c = new Complaint();
-            c.ExplorerId = input.Id;
+            c.ExplorerId = input.Id.ToString();
             c.Text = input.Text;
-            c.HosterId = User.GetUserGuId();
+            c.HosterId = User.GetUserId();
             c.RentId = input.RentId;
 
             await _db.Complaints.Add(c);

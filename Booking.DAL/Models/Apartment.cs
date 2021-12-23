@@ -15,7 +15,7 @@ namespace Booking.DAL.Models
         public ApartmentState State { get; set; }
 
         [Display(Name = "Hoster")]
-        public Guid HosterId { get; set; }
+        public string HosterId { get; set; }
         public virtual Hoster Hoster { get; set; }
 
         [Display(Name = "Location")]

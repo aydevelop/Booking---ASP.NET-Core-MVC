@@ -35,7 +35,7 @@ namespace Booking.Areas.HosterArea.Controllers
         {
             ApartmentIndexVM model = new ApartmentIndexVM();
             model.apartments = await _db.Apartments.GetApartmentsWithDependencies();
-            var userId = User.GetUserGuId();
+            var userId = User.GetUserId();
             model.apartments = model.apartments.Where(q => q.HosterId == userId).ToList();
             model.rents = await _db.Rents.GetWithInclude(new[] { "Explorer", "Apartment" });
             model.rents = model.rents.Where(q => q.Apartment.HosterId == userId).ToList();
@@ -74,7 +74,9 @@ namespace Booking.Areas.HosterArea.Controllers
             }
 
             Apartment aprt = item.apartment;
+            aprt.HosterId = User.GetUserId();
             await _db.Apartments.Add(aprt);
+
             foreach (var data in item.AssignedFeatures.Where(q => q.Assigned))
             {
                 var ftr = await _db.Features.GetByFiler(q => q.Name == data.FeatureName);
@@ -121,7 +123,6 @@ namespace Booking.Areas.HosterArea.Controllers
             var aprtCheck = await _db.Apartments.GetById(item.apartment.Id);
             if (aprtCheck == null) { return NotFound(); }
             Apartment aprt = item.apartment;
-            aprt.HosterId = User.GetUserGuId();
             await _db.Apartments.Update(aprt);
 
             var allApFeat = await _db.ApartmentFeatures.GetAll();
@@ -163,6 +164,22 @@ namespace Booking.Areas.HosterArea.Controllers
             model.rents = rents.Take(10).ToList();
 
             return View(model);
+        }
+
+        [HttpPost]
+        public override async Task<ActionResult> DeleteItem(Guid id)
+        {
+            var all = await _db.Apartments.GetByFilerWithInclude(q => q.Id == id, new[] { "Rates" });
+            if (all.Count == 0) { return NotFound(); }
+            Apartment item = all.First();
+
+            foreach (Rate rate in item.Rates)
+            {
+                await _db.Rates.Delete(rate);
+            }
+
+            await _db.Apartments.Delete(item);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -46,7 +46,7 @@ namespace Booking.Areas.ExplorerArea.Controllers
             }
 
             var all = await _db.Explorers.GetAll();
-            var userId = User.GetUserGuId();
+            var userId = User.GetUserId();
 
             model.Rents = await _db.Rents.GetByFilerWithInclude(
                 q => q.ExplorerId == userId,
@@ -85,7 +85,7 @@ namespace Booking.Areas.ExplorerArea.Controllers
 
             Rent rent = new Rent();
             rent.ApartmentId = model.ApartmentId;
-            rent.ExplorerId = User.GetUserGuId();
+            rent.ExplorerId = User.GetUserId();
             rent.StartDate = model.StartDate;
             rent.EndDate = model.EndDate;
             rent.State = RentState.Requested;

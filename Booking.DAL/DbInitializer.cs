@@ -113,42 +113,42 @@ namespace Booking.DAL
                     Name="Mountain Residence", Address="Chaikovskogo 127",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=GetRandomHoster(),
-                    HosterId=Guid.Parse(hoster.Id),
+                    HosterId=(hoster.Id),
                     Location=GetRandomLocation(),
                 },
                 new Apartment {
                     Name="Cities Gallery", Address="Tomashivs'koho 4",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=hoster,
-                    HosterId=Guid.Parse(hoster.Id),
+                    HosterId=(hoster.Id),
                     Location=GetRandomLocation()
                 },
                 new Apartment {
                     Name="Opera Passage", Address="Avtozavodskaya 77a",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=hoster,
-                    HosterId=Guid.Parse(hoster.Id),
+                    HosterId=(hoster.Id),
                     Location=GetRandomLocation()
                 },
                 new Apartment {
                     Name="Barra Family Resort", Address="Volkova 302",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=hoster,
-                    HosterId=Guid.Parse(hoster.Id),
+                     HosterId=(hoster.Id),
                     Location=GetRandomLocation()
                 },
                 new Apartment {
                     Name="Allurapart Мalahyt", Address="Bogdanovskaya 67b",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=hoster,
-                    HosterId=Guid.Parse(hoster.Id),
+                     HosterId=(hoster.Id),
                     Location=GetRandomLocation()
                 },
                 new Apartment {
                     Name="City Rooms", Address="Rishelievska 7",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=hoster,
-                    HosterId=Guid.Parse(hoster.Id),
+                    HosterId=(hoster.Id),
                     Location=GetRandomLocation()
                 },
             };
@@ -176,43 +176,36 @@ namespace Booking.DAL
             {
                 new Rent {
                     Explorer = explorer,
-                    ExplorerId = Guid.Parse(explorer.Id),
                     Apartment = GetRandomApartment(),
                     StartDate = DateTime.Now.AddDays(1), EndDate=DateTime.Now.AddDays(2), State=RentState.Requested
                 },
                 new Rent {
                     Explorer = explorer,
-                    ExplorerId = Guid.Parse(explorer.Id),
                     Apartment = GetRandomApartment(),
                     StartDate = DateTime.Now.AddDays(11), EndDate=DateTime.Now.AddDays(2), State=RentState.Approved
                 },
                 new Rent {
                     Explorer = explorer,
-                    ExplorerId = Guid.Parse(explorer.Id),
                     Apartment = GetRandomApartment(),
                     StartDate = DateTime.Now.AddDays(3), EndDate=DateTime.Now.AddDays(2), State=RentState.Approved
                 },
                 new Rent {
                     Explorer = explorer,
-                    ExplorerId = Guid.Parse(explorer.Id),
                     Apartment = GetRandomApartment(),
                     StartDate = DateTime.Now.AddDays(7), EndDate=DateTime.Now.AddDays(2), State=RentState.Rejected
                 },
                 new Rent {
                     Explorer = explorer,
-                    ExplorerId = Guid.Parse(explorer.Id),
                     Apartment = GetRandomApartment(),
                     StartDate = DateTime.Now.AddDays(-13), EndDate=DateTime.Now.AddDays(-5), State=RentState.Completed
                 },
                 new Rent {
                     Explorer = explorer,
-                    ExplorerId = Guid.Parse(explorer.Id),
                     Apartment = GetRandomApartment(),
                     StartDate = DateTime.Now.AddDays(9), EndDate=DateTime.Now.AddDays(2), State=RentState.Inactive
                 },
                 new Rent {
                     Explorer = explorer,
-                    ExplorerId = Guid.Parse(explorer.Id),
                     Apartment = GetRandomApartment(),
                     StartDate = DateTime.Now.AddDays(-1), EndDate=DateTime.Now, State=RentState.Approved
                 },
@@ -230,10 +223,10 @@ namespace Booking.DAL
                 Hoster cHoster = GetRandomHoster();
 
                 complaint.Explorer = cExplorer;
-                complaint.ExplorerId = Guid.Parse(cExplorer.Id);
+                complaint.ExplorerId = cExplorer.Id;
 
                 complaint.Hoster = cHoster;
-                complaint.HosterId = Guid.Parse(cHoster.Id);
+                complaint.HosterId = cHoster.Id;
 
                 complaint.Text = "Smoked in the apartment";
                 complaints.Add(complaint);
@@ -243,36 +236,26 @@ namespace Booking.DAL
             await context.SaveChangesAsync();
 
 
-            if (context.Rents.Count() > 0)
-            {
-                foreach (var item in context.Apartments)
-                {
-                    var rates = new List<Rate>();
-                    for (int i = 0; i < 5; i++)
-                    {
-                        Rate rate = new Rate();
-                        rate.Apartment = item;
-                        rate.Rent = GetRandomRent();
-                        rate.Value = new Random().Next(1, 6);
-                        rates.Add(rate);
-                    }
-                    context.Rates.AddRange(rates);
-                }
-            }
-
-            await context.SaveChangesAsync();
-
             context.Rents.Add(new Rent
             {
                 Explorer = explorer,
-                ExplorerId = Guid.Parse(explorer.Id),
+                ExplorerId = explorer.Id,
                 Apartment = GetRandomApartment(),
                 StartDate = DateTime.Now.AddDays(-11),
                 EndDate = DateTime.Now.AddDays(-5),
                 State = RentState.Completed
             });
 
-            await context.SaveChangesAsync();
+            if (context.Rents.Count() > 0)
+            {
+                context.Rates.Add(new Rate()
+                {
+                    Apartment = GetRandomApartment(),
+                    Rent = GetRandomRent(),
+                    Value = new Random().Next(1, 6)
+                });
+                await context.SaveChangesAsync();
+            }
         }
 
         static Rent GetRandomRent()

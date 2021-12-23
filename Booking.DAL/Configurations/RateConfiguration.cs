@@ -8,13 +8,13 @@ namespace Booking.DAL.Configurations
     {
         public void Configure(EntityTypeBuilder<Rate> builder)
         {
-            builder.HasOne(p => p.Apartment)
-            .WithMany(t => t.Rates)
-            .OnDelete(DeleteBehavior.SetNull);
+            //builder.HasOne(p => p.Apartment)
+            //.WithMany(t => t.Rates)
+            //.OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(p => p.Rent)
-            .WithOne(q => q.Rate)
-            .OnDelete(DeleteBehavior.SetNull);
+            //builder.HasOne(p => p.Rent)
+            //.WithOne(q => q.Rate)
+            //.OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

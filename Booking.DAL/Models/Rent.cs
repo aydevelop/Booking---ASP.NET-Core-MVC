@@ -12,7 +12,7 @@ namespace Booking.DAL.Models
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
 
-        public Guid ExplorerId { get; set; }
+        public string ExplorerId { get; set; }
         public virtual Explorer Explorer { get; set; }
 
         public Guid ApartmentId { get; set; }
