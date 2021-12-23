@@ -169,11 +169,11 @@ namespace Booking.Areas.HosterArea.Controllers
         [HttpPost]
         public override async Task<ActionResult> DeleteItem(Guid id)
         {
-            var all = await _db.Apartments.GetByFilerWithInclude(q => q.Id == id, new[] { "Rates" });
-            if (all.Count == 0) { return NotFound(); }
-            Apartment item = all.First();
+            var item = await _db.Apartments.GetById(id);
+            if (item == null) { return NotFound(); }
 
-            foreach (Rate rate in item.Rates)
+            var rates = await _db.Rates.GetByFiler(q => q.ApartmentId == id);
+            foreach (var rate in rates)
             {
                 await _db.Rates.Delete(rate);
             }

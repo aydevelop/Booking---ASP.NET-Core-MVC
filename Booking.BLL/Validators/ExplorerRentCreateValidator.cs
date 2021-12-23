@@ -17,7 +17,7 @@ namespace Booking.BLL.Validators
         private bool IsValidStartDate(DateTime value)
         {
             DateTime now = DateTime.Now;
-            if (value < now)
+            if (value < now || value > _model.EndDate)
             {
                 return false;
             }

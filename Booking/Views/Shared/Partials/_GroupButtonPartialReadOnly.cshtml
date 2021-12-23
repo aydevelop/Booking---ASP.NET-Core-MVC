@@ -1,0 +1,7 @@
+﻿@model Object
+
+
+<div class="btn-group group-action" role="group">
+    <a class="btn btn-primary btn-sm btn-primary" style="width:70px" asp-action="CreateOrEdit" asp-route-id="@Model.ToString()">Edit</a>
+    <a class="btn btn-primary btn-sm btn-success" style="width:70px" asp-action="Details" asp-route-id="@Model.ToString()">Details</a>
+</div>
