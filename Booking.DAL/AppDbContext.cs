@@ -26,6 +26,7 @@ namespace Booking.DAL
             modelBuilder.ApplyConfiguration(new ApartmentConfiguration());
             modelBuilder.ApplyConfiguration(new HosterConfiguration());
             modelBuilder.ApplyConfiguration(new LocationConfiguration());
+            modelBuilder.ApplyConfiguration(new RateConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }

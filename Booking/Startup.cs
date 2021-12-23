@@ -78,7 +78,7 @@ namespace Booking
                 new UnbanUserJob(repositories.Explorers).Run(), UnbanUserJob.Interval);
 
             RecurringJob.AddOrUpdate("DraftApartment", () =>
-                new DraftApartmentJob(repositories).Run(), DraftApartmentJob.Interval);
+                 new DraftApartmentJob(repositories).Run(), DraftApartmentJob.Interval);
         }
     }
 }

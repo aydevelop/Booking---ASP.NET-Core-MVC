@@ -55,17 +55,19 @@ namespace Booking.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser
+                var user = new Explorer
                 {
                     UserName = viewModel.Email.Split('@')[0],
                     Email = viewModel.Email,
+                    FirstName = viewModel.FirstName,
+                    LastName = viewModel.LastName
                 };
 
                 var result = await _userManager.CreateAsync(user, viewModel.Password);
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, true);
-                    return RedirectToAction(nameof(Login));
+                    return LocalRedirect("/");
                 }
 
                 foreach (var identityError in result.Errors)
@@ -100,6 +102,7 @@ namespace Booking.Controllers
             c.Text = input.Text;
             c.HosterId = User.GetUserGuId();
             c.RentId = input.RentId;
+
             await _db.Complaints.Add(c);
 
             return LocalRedirect($"/HosterArea/Rent/Details/{input.RentId}");

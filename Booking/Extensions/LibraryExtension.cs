@@ -33,13 +33,12 @@ namespace Booking.Extensions
             }));
             services.AddHangfireServer();
 
-
             return services;
         }
 
         public static IApplicationBuilder AddLibrary(this IApplicationBuilder app)
         {
-            //app.UseHangfireDashboard();
+            app.UseHangfireDashboard();
             return app;
         }
     }

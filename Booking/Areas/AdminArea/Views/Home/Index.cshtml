@@ -8,7 +8,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <h3 class="text-center">Admin Panel</h3>
+            <h3 class="title">Admin Panel</h3>
         </div>
     </div>
     <div class="row mt-3 pt-3" style="background-color: #eeeeee">
@@ -87,7 +87,7 @@
         </div>
     </div>
 
-    <h3 class="text-center mt-5 mb-4 title-small">Apartments</h3>
+    <h3 class="title">Apartments</h3>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -119,7 +119,7 @@
                         @Html.DisplayFor(modelItem => item.Address)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.AvgScore)
+                        @(item.Rates.Count>0 ? String.Format("{0:0.0}", item.Rates.Average(q=>q.Value)) : 0)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.MaxDurationInDays) days
@@ -138,7 +138,7 @@
         </tbody>
     </table>
 
-    <h3 class="text-center mt-5 mb-4 title-small">Rents</h3>
+    <h3 class="title">Rents</h3>
     <table class="table table-striped mb-5">
         <thead>
             <tr>

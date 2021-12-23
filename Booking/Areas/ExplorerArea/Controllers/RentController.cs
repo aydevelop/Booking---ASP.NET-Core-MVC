@@ -91,6 +91,10 @@ namespace Booking.Areas.ExplorerArea.Controllers
             rent.State = RentState.Requested;
             await _db.Rents.Add(rent);
 
+            Apartment apartment = await _db.Apartments.GetById(model.ApartmentId);
+            apartment.State = ApartmentState.Inactive;
+            await _db.Apartments.Update(apartment);
+
             return RedirectToAction(nameof(Index));
         }
 

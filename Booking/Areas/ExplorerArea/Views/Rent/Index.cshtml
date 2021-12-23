@@ -4,8 +4,7 @@
     ViewData["Title"] = "Rents";
 }
 
-<h3 class="text-center mt-5 mb-4 font-weight-bold title-small">My Rents</h3>
-
+<h3 class="title">My Rents</h3>
 
 @if (Model.Rent != null)
 {
@@ -46,22 +45,22 @@
         {
             <span>Rent is completed.</span>
             if (Model.Rent.Rate == null)
-                {
+            {
                 <span>You can rate:</span>
                 <span>
-                <form asp-area="ExplorerArea" asp-controller="Rent" asp-action="CreateFeedback" class="form-feedback" method="post">
-                    <input type="hidden" name="ApartmentId" value="@Model.Rent.ApartmentId" />
-                    <input type="hidden" name="RentId" value="@Model.RentId" />
+                    <form asp-area="ExplorerArea" asp-controller="Rent" asp-action="CreateFeedback" class="form-feedback" method="post">
+                        <input type="hidden" name="ApartmentId" value="@Model.Rent.ApartmentId" />
+                        <input type="hidden" name="RentId" value="@Model.RentId" />
 
-                    <select name="rate" id="rate" class="form-select" aria-label="Leave feedback">
-                        <option selected>Select</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-                </form>
+                        <select name="rate" id="rate" class="form-select" aria-label="Leave feedback">
+                            <option selected>Select</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </form>
                 </span>
             }
             else

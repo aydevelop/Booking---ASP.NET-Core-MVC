@@ -3,8 +3,11 @@ using Booking.BLL.ViewModels;
 using Booking.BLL.ViewModels.Data;
 using Booking.BLL.ViewModels.HosterArea;
 using Booking.Controllers;
+using Booking.DAL;
 using Booking.DAL.Models;
 using Booking.Extensions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,13 +17,18 @@ using System.Threading.Tasks;
 namespace Booking.Areas.HosterArea.Controllers
 {
     [Area("HosterArea")]
+    [Authorize(Roles = "hoster")]
     public class ApartmentController : BaseController<Apartment>
     {
+        private readonly AppDbContext context;
         private readonly IRepositories _db;
+        private readonly UserManager<IdentityUser> userManager;
 
-        public ApartmentController(IRepositories db) : base(db.Apartments)
+        public ApartmentController(AppDbContext context, IRepositories db, UserManager<IdentityUser> userManager) : base(db.Apartments)
         {
+            this.context = context;
             _db = db;
+            this.userManager = userManager;
         }
 
         public override async Task<ActionResult> Index()
@@ -113,6 +121,7 @@ namespace Booking.Areas.HosterArea.Controllers
             var aprtCheck = await _db.Apartments.GetById(item.apartment.Id);
             if (aprtCheck == null) { return NotFound(); }
             Apartment aprt = item.apartment;
+            aprt.HosterId = User.GetUserGuId();
             await _db.Apartments.Update(aprt);
 
             var allApFeat = await _db.ApartmentFeatures.GetAll();

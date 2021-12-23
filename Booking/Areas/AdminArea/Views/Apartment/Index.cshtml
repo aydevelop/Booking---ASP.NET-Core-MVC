@@ -5,6 +5,7 @@
 }
 
 <h3 class="text-center mt-5">Apartments</h3>
+<h3 class="title">Apartments</h3>
 
 <p class="btn-create">
     <a asp-area="adminarea" asp-action="CreateOrEdit">Create New</a>
@@ -47,7 +48,7 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Hoster.FullName)
+                    @(item.Hoster?.FullName ?? "")
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Location.Name)
@@ -56,7 +57,7 @@
                     @Html.DisplayFor(modelItem => item.Address)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.AvgScore)
+                    @(item.Rates.Count>0 ? String.Format("{0:0.0}", item.Rates.Average(q=>q.Value)) : 0)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.MaxDurationInDays)

@@ -2,6 +2,7 @@
 using Booking.DAL.Enums;
 using Booking.DAL.Models;
 using System;
+using System.Threading.Tasks;
 
 namespace Booking.BLL.Jobs
 {
@@ -15,9 +16,9 @@ namespace Booking.BLL.Jobs
             _repositories = repositories;
         }
 
-        public void Run()
+        public async Task Run()
         {
-            var rents = _repositories.Rents.GetWithInclude(new[] { "Apartment" }).Result;
+            var rents = await _repositories.Rents.GetWithInclude(new[] { "Apartment" });
             DateTime now = DateTime.Now;
 
             for (int i = 0; i < rents.Count; i++)
@@ -27,13 +28,17 @@ namespace Booking.BLL.Jobs
                 {
                     Apartment apartment = rent.Apartment;
                     apartment.State = ApartmentState.Draft;
-                    _repositories.Apartments.Update(apartment).Wait();
+                    await _repositories.Apartments.Update(apartment);
+
+                    Rent rentUpdate = await _repositories.Rents.GetById(rent.Id);
+                    rentUpdate.State = RentState.Completed;
+                    await _repositories.Rents.Update(rentUpdate);
                 }
                 else if (rent.Apartment.State == ApartmentState.Draft && rent.EndDate.Date < now.Date)
                 {
                     Apartment apartment = rent.Apartment;
                     apartment.State = ApartmentState.Active;
-                    _repositories.Apartments.Update(apartment).Wait();
+                    await _repositories.Apartments.Update(apartment);
                 }
             }
         }

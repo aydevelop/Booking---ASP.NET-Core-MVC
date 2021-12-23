@@ -15,7 +15,7 @@ namespace Booking.DAL.Models
         {
             get
             {
-                return FirstName + " " + LastName;
+                return (FirstName ?? "-") + " " + (LastName ?? "-");
             }
         }
     }

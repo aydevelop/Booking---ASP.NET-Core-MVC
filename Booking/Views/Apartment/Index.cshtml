@@ -18,7 +18,7 @@
                 <div class="card-body">
                     <h4 class="card-text pb-3 text-center">@item.Name</h4>
                     <p class="card-text">@item.Location.Name - @item.Address</p>
-                    <p class="card-text">Hoster - @item.Hoster.FullName</p>
+                    <p class="card-text">Hoster - @item.Hoster?.FullName</p>
 
                     <div class="a-props ml-4 mt-4 mb-4">
                         @foreach (var prop in item.Features)
@@ -32,22 +32,22 @@
 
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="rating">
-                            @{
+                            @if (item.Rates.Count > 0)
+                            {
                                 double avgRates = @item.Rates.Average(q => q.Value);
                                 int avgInt = Convert.ToInt32(avgRates);
                                 double resDouble = avgRates % avgInt;
-                            }
 
-                            @for (int i = 0; i <= avgInt; i++)
-                            {
-                                <i class="fa fa-star"></i>
-                            }
+                                for (int i = 0; i <= avgInt; i++)
+                                {
+                                    <i class="fa fa-star"></i>
+                                }
 
-                            @if (resDouble >= 0.5)
-                            {
-                                <i class="fa fa-star-half"></i>
+                                @if (resDouble >= 0.5)
+                                {
+                                    <i class="fa fa-star-half"></i>
+                                }
                             }
-
                         </div>
                         <div class="btn-group">
                             <a href="/ExplorerArea/Rent/Create?id=@item.Id" type="button" class="btn btn btn-success">Rent</a>

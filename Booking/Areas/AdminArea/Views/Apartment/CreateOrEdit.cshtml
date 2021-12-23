@@ -5,6 +5,8 @@
     ViewData["Title"] = action;
 }
 
+<h3 class="title">@action</h3>
+
 <form asp-area="adminarea" asp-action="@action">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Id" class="form-control" />

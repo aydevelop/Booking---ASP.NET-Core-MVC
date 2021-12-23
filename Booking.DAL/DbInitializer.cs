@@ -48,8 +48,8 @@ namespace Booking.DAL
                 UserName = "explorer01",
                 Email = "explorer01@mail.com",
                 PasswordHash = passwordHasher.HashPassword(null, "Pa$$w0rd"),
-                State = ExplorerState.Banned,
-                DateFromState = DateTime.Now.AddDays(4)
+                State = ExplorerState.Active,
+                //DateFromState = DateTime.Now.AddDays(4)
             };
 
             await roleManager.CreateAsync(new IdentityRole("admin"));
@@ -86,7 +86,6 @@ namespace Booking.DAL
             context.Hosters.AddRange(hosters);
             await context.SaveChangesAsync();
 
-
             var features = new List<Feature>
             {
                 new Feature { Name="Bar", State=FeatureState.Active },
@@ -114,6 +113,7 @@ namespace Booking.DAL
                     Name="Mountain Residence", Address="Chaikovskogo 127",
                     AvgScore=5, MaxDurationInDays=7, State=ApartmentState.Active,
                     Hoster=GetRandomHoster(),
+                    HosterId=Guid.Parse(hoster.Id),
                     Location=GetRandomLocation(),
                 },
                 new Apartment {
@@ -216,6 +216,7 @@ namespace Booking.DAL
                     Apartment = GetRandomApartment(),
                     StartDate = DateTime.Now.AddDays(-1), EndDate=DateTime.Now, State=RentState.Approved
                 },
+
             };
 
             context.Rents.AddRange(rents);
@@ -242,19 +243,34 @@ namespace Booking.DAL
             await context.SaveChangesAsync();
 
 
-            foreach (var item in context.Apartments)
+            if (context.Rents.Count() > 0)
             {
-                var rates = new List<Rate>();
-                for (int i = 0; i < 5; i++)
+                foreach (var item in context.Apartments)
                 {
-                    Rate rate = new Rate();
-                    rate.Apartment = item;
-                    rate.Rent = GetRandomRent();
-                    rate.Value = new Random().Next(1, 6);
-                    rates.Add(rate);
+                    var rates = new List<Rate>();
+                    for (int i = 0; i < 5; i++)
+                    {
+                        Rate rate = new Rate();
+                        rate.Apartment = item;
+                        rate.Rent = GetRandomRent();
+                        rate.Value = new Random().Next(1, 6);
+                        rates.Add(rate);
+                    }
+                    context.Rates.AddRange(rates);
                 }
-                context.Rates.AddRange(rates);
             }
+
+            await context.SaveChangesAsync();
+
+            context.Rents.Add(new Rent
+            {
+                Explorer = explorer,
+                ExplorerId = Guid.Parse(explorer.Id),
+                Apartment = GetRandomApartment(),
+                StartDate = DateTime.Now.AddDays(-11),
+                EndDate = DateTime.Now.AddDays(-5),
+                State = RentState.Completed
+            });
 
             await context.SaveChangesAsync();
         }

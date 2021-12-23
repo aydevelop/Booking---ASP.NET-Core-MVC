@@ -1,5 +1,6 @@
 ﻿using Booking.BLL.Contracts;
 using Booking.DAL.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 namespace Booking.Areas.HosterArea.Controllers
 {
     [Area("HosterArea")]
+    [Authorize(Roles = "hoster")]
     public class RentController : Controller
     {
         private readonly IRepositories _db;
@@ -46,6 +48,10 @@ namespace Booking.Areas.HosterArea.Controllers
 
             rent.State = RentState.Rejected;
             await _db.Rents.Update(rent);
+
+            var apartment = await _db.Apartments.GetById(rent.ApartmentId);
+            apartment.State = ApartmentState.Active;
+            await _db.Apartments.Update(apartment);
 
             return RedirectToAction(nameof(Rejected));
         }

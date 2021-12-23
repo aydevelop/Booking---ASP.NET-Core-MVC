@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Booking.Areas.HosterArea.Controllers
 {
     [Area("HosterArea")]
+    [Authorize(Roles = "hoster")]
     public class HomeController : Controller
     {
         [Authorize]
