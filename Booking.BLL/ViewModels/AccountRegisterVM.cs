@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Booking.BLL.ViewModels
 {
@@ -16,6 +17,8 @@ namespace Booking.BLL.ViewModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [BindProperty]
+        public string Role { get; set; }
         public string ReturnUrl { get; set; }
     }
 }

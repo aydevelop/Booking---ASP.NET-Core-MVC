@@ -55,17 +55,40 @@ namespace Booking.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new Explorer
+                IdentityUser user;
+                if (viewModel.Role == "Hoster")
                 {
-                    UserName = viewModel.Email.Split('@')[0],
-                    Email = viewModel.Email,
-                    FirstName = viewModel.FirstName,
-                    LastName = viewModel.LastName
-                };
+                    user = new Hoster
+                    {
+                        UserName = viewModel.Email.Split('@')[0],
+                        Email = viewModel.Email,
+                        FirstName = viewModel.FirstName,
+                        LastName = viewModel.LastName
+                    };
+                }
+                else
+                {
+                    user = new Explorer
+                    {
+                        UserName = viewModel.Email.Split('@')[0],
+                        Email = viewModel.Email,
+                        FirstName = viewModel.FirstName,
+                        LastName = viewModel.LastName
+                    };
+                }
 
                 var result = await _userManager.CreateAsync(user, viewModel.Password);
                 if (result.Succeeded)
                 {
+                    if (viewModel.Role == "Hoster")
+                    {
+                        await _userManager.AddToRoleAsync(user, "hoster");
+                    }
+                    else
+                    {
+                        await _userManager.AddToRoleAsync(user, "explorer");
+                    }
+
                     await _signInManager.SignInAsync(user, true);
                     return LocalRedirect("/");
                 }
